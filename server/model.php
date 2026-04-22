@@ -14,16 +14,16 @@
  * DBPWD : Mot de passe pour se connecter à la base de données.
  */
 define("HOST", "localhost");
-define("DBNAME", "morap01");
-define("DBLOGIN", "morap01");
-define("DBPWD", "morap01");
+define("DBNAME", "milon3");
+define("DBLOGIN", "milon3");
+define("DBPWD", "milon3");
 
 
 function getAllMovies(){
     // Connexion à la base de données
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
     // Requête SQL pour récupérer le menu avec des paramètres
-    $sql = "select id, name, image from Movie";
+    $sql = "select id, name, image, description from SAE203_Movie";
     // Prépare la requête SQL
     $stmt = $cnx->prepare($sql);
     // Exécute la requête SQL

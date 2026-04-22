@@ -1,0 +1,45 @@
+.movie {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: var(--color-gray-dark);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.movie:hover {
+  transform: scale(1.05);
+}
+
+.movie__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: left;
+  gap: 1rem;
+}
+
+.movie__image {
+  width: 50%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 0.25rem;
+}
+
+.movie__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-fg);
+  line-height: 1.2;
+}
+
+.movie__description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-fg);
+  line-height: 1.4;
+}

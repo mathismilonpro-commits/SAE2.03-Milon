@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <title>SAE2.03 APP</title>
+    <title>SAE2.03 APP - Films</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/base.css" />
@@ -10,10 +10,12 @@
   <body>
     <header id="header"></header>
 
-    <section id="content"></section>
+    <section id="content" class="p-4"></section>
 
     <script type="module">
       import { NavBar } from "./component/NavBar/script.js";
+      import { Movie } from "./component/Movie/script.js";
+      import { DataMovie } from "./data/dataMovie.js";
 
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
@@ -22,12 +24,39 @@
 
       C.handlerAbout = function () {
         alert(
-          "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !"
+          "SAE 2.03 - Plateforme VOD (Netflix-like)\nAffichage des films disponibles"
         );
+      };
+
+      C.displayMovies = async function () {
+        try {
+          // Récupère les films depuis le serveur
+          const movies = await DataMovie.requestMovies();
+
+          // Vérife si la réponse est un tableau
+          if (Array.isArray(movies) && movies.length > 0) {
+            // Formate et affiche les films
+            const moviesHtml = Movie.format(movies);
+            const content = document.querySelector("#content");
+            content.innerHTML = `
+              <div class="grid grid-cols-3">
+                ${moviesHtml}
+              </div>
+            `;
+          } else {
+            document.querySelector("#content").innerHTML =
+              "<p>Aucun film disponible pour le moment.</p>";
+          }
+        } catch (error) {
+          console.error("Erreur lors du chargement des films:", error);
+          document.querySelector("#content").innerHTML =
+            "<p>Erreur lors du chargement des films.</p>";
+        }
       };
 
       C.start = function () {
         V.renderNavBar("C.handlerAbout()");
+        C.displayMovies();
       };
 
       // Vue (contient tout ce qui est relatif à l'affichage)
@@ -49,4 +78,4 @@
     </script>
   </body>
 </html>
-<script type="module"></script>
+
