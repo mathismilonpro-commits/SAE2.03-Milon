@@ -1,5 +1,5 @@
 .movie {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   gap: 0.5rem;
   padding: 1rem;
@@ -21,8 +21,40 @@
   gap: 1rem;
 }
 
+.movie__header {
+  
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.movie__time {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.movie__dir{
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--color-fg);
+}
+
+.movie__year{
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--color-fg);
+}
+
+.movie__length{
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--color-fg);
+}
+
 .movie__image {
-  width: 50%;
+  width: 25%;
   height: auto;
   aspect-ratio: 2 / 3;
   object-fit: cover;

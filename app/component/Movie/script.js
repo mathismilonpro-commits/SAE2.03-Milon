@@ -15,19 +15,21 @@ Movie.format = function (movies) {
     movies = [movies];
   }
 
-  console.log("Movie.format - films reçus:", movies);
-  console.log("Movie.format - template:", template);
 
   let html = "";
 
   movies.forEach((movie) => {
     let movieHtml = template;
-    console.log("Avant remplacement:", movieHtml);
+    
     movieHtml = movieHtml.replaceAll("{{id}}", movie.id);
     movieHtml = movieHtml.replaceAll("{{name}}", movie.name);
+    movieHtml = movieHtml.replaceAll("{{director}}", movie.director);
+    movieHtml = movieHtml.replaceAll("{{year}}", movie.year);
+    movieHtml = movieHtml.replaceAll("{{length}}", movie.length);
+
     movieHtml = movieHtml.replaceAll("{{image}}", movie.image);
     movieHtml = movieHtml.replaceAll("{{description}}", movie.description);
-    console.log("Après remplacement:", movieHtml);
+  
     html += movieHtml;
   });
 
