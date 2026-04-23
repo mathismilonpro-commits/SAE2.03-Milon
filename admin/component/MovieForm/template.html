@@ -1,0 +1,15 @@
+<div class="form">
+    <h2>Ajouter un film</h2>
+    <form method="POST" class="addFilm__form" onsubmit="event.preventDefault(); {{handler}}()">
+        <input type="text" name="name" placeholder="Titre du film" required />
+        <input type="text" name="director" placeholder="Réalisateur" required />
+        <input type="number" name="year" placeholder="Année de sortie" required />
+        <input type="number" name="length" placeholder="Durée (minutes)" required />
+        <input type="text" name="description" placeholder="Description" required />
+        <input type="text" name="categorie" placeholder="Catégorie" required />
+        <input type="text" name="image" placeholder="Affiche" required />
+        <input type="text" name="trailer" placeholder="URL Trailer" required />
+        <input type="number" name="min_age" placeholder="Restrictions d'âge" required />
+        <button type="submit">Ajouter</button>
+    </form>
+</div>

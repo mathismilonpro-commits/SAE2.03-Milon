@@ -32,3 +32,27 @@ function getAllMovies(){
     $res = $stmt->fetchAll(PDO::FETCH_OBJ);
     return $res; // Retourne les résultats
 }
+
+function addMovie($name, $image, $year, $description, $director, $categorie,$trailer, $min_age, $length){
+    // Connexion à la base de données
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    // Requête SQL pour insérer un nouveau film avec des paramètres
+    $sql = "INSERT INTO SAE203_Movie (name, image, year, description, director, id_category, trailer, min_age, length) VALUES (:name, :image, :year, :description, :director, (SELECT id FROM SAE203_Category WHERE name = :categorie), :trailer, :min_age, :length)";
+    // Prépare la requête SQL
+    $stmt = $cnx->prepare($sql);
+    // Lie les paramètres à la requête SQL
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':image', $image);
+    $stmt->bindParam(':year', $year);
+    $stmt->bindParam(':description', $description);
+    $stmt->bindParam(':director', $director);
+    $stmt->bindParam(':categorie', $categorie);
+    $stmt->bindParam(':trailer', $trailer);
+    $stmt->bindParam(':min_age', $min_age);
+    $stmt->bindParam(':length', $length);
+    // Exécute la requête SQL
+    $result = $stmt->execute();
+    // Récupère le nombre de lignes affectées par l'insertion
+    $affectedRows = $stmt->rowCount();
+    return $result; // Retourne true si l'insertion a réussi, sinon false
+}
