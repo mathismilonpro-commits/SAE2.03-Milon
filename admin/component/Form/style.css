@@ -1,0 +1,52 @@
+body {
+    background-image: url('asset/bg.jpg');
+    background-size: cover;
+}
+
+nav {
+    width:30rem;
+    margin-left:15rem;
+    margin-top: 4rem;
+    text-align: center;
+   
+    
+}
+
+nav h1 {
+    font-size: xx-large;
+}
+
+
+form {
+    width:30rem;
+    margin-left:15rem;
+    margin-top: 3em;
+    display: flex;
+    flex-direction: column;
+    
+}
+form select {
+    font-size: medium;
+    border-style: none;
+}
+
+form input, select {
+    margin-top: 1rem;
+    font-size: medium;
+    border-style: none;
+    display: inline-block;
+    height: 2rem;
+}
+
+form input[type=submit] {
+    background-color: rgb(151, 92, 36);
+    color:#fff;
+   
+}
+
+form h3 {
+    color:black;
+    border-bottom-style:solid;
+    border-width: 1px;
+    height: 1.5em;
+}

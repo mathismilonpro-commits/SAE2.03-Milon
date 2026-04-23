@@ -1,4 +1,5 @@
 .movie {
+  
   display: inline-flex;
   flex-direction: row;
   gap: 0.5rem;
@@ -7,6 +8,13 @@
   border-radius: 0.5rem;
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
+  min-width: 28.125rem;
+}
+
+.movie__list {
+  width: fit-content;
+  margin: 2rem auto;
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .movie:hover {
@@ -14,6 +22,7 @@
 }
 
 .movie__info {
+  
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -54,7 +63,7 @@
 }
 
 .movie__image {
-  width: 25%;
+  width: 40%;
   height: auto;
   aspect-ratio: 2 / 3;
   object-fit: cover;

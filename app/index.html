@@ -10,7 +10,13 @@
   <body>
     <header id="header"></header>
 
-    <section id="content" class="p-4"></section>
+    <section id="content">
+      <div class="movie__container">
+        <div id="movie-list" class="movie__list grid-context gap-m">
+          <!-- Les cartes de films movie-card -->
+        </div>
+      </div>
+    </section>
 
     <script type="module">
       import { NavBar } from "./component/NavBar/script.js";
@@ -28,35 +34,15 @@
         );
       };
 
-      C.displayMovies = async function () {
-        try {
-          // Récupère les films depuis le serveur
-          const movies = await DataMovie.requestMovies();
-
-          // Vérife si la réponse est un tableau
-          if (Array.isArray(movies) && movies.length > 0) {
-            // Formate et affiche les films
-            const moviesHtml = Movie.format(movies);
-            const content = document.querySelector("#content");
-            content.innerHTML = `
-              <div class="grid grid-cols-3">
-                ${moviesHtml}
-              </div>
-            `;
-          } else {
-            document.querySelector("#content").innerHTML =
-              "<p>Aucun film disponible pour le moment.</p>";
-          }
-        } catch (error) {
-          console.error("Erreur lors du chargement des films:", error);
-          document.querySelector("#content").innerHTML =
-            "<p>Erreur lors du chargement des films.</p>";
-        }
+      C.handlerMovies = async function () {
+        let movies = await DataMovie.requestMovies();
+        V.renderMovies(movies);
       };
+
 
       C.start = function () {
         V.renderNavBar("C.handlerAbout()");
-        C.displayMovies();
+        C.handlerMovies();
       };
 
       // Vue (contient tout ce qui est relatif à l'affichage)
@@ -72,6 +58,11 @@
       V.renderNavBar = function (hAbout) {
         let header = document.querySelector("#header");
         header.innerHTML = NavBar.format(hAbout);
+      };
+
+      V.renderMovies = function (movies) {
+        let content = document.querySelector("#movie-list");
+        content.innerHTML = Movie.format(movies);
       };
 
       C.start(); // Démarre l'application
