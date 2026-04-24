@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
   <head>
     <title>SAE2.03 APP - Films</title>
@@ -16,7 +16,7 @@
           <!-- Les cartes de films movie-card -->
         </div>
       </div>
-      <div id="movie-detail-container" style="display: none;">
+      <div id="movie-detail-container" style="display: none">
         <!-- Le détail d'un film -->
       </div>
     </section>
@@ -26,6 +26,7 @@
       import { Movie } from "./component/Movie/script.js";
       import { MovieDetail } from "./component/MovieDetail/script.js";
       import { DataMovie } from "./data/dataMovie.js";
+      import { MovieCategory } from "./component/MovieCategory/script.js";
 
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
@@ -34,7 +35,7 @@
 
       C.handlerAbout = function () {
         alert(
-          "SAE 2.03 - Plateforme VOD (Netflix-like)\nAffichage des films disponibles"
+          "SAE 2.03 - Plateforme VOD (Netflix-like)\nAffichage des films disponibles",
         );
       };
 
@@ -48,6 +49,10 @@
         V.renderMovieDetails(movie);
       };
 
+      C.handlerMovies = async function () {
+        let movies = await DataMovie.requestMoviesGroupedByCategory();
+        V.renderMoviesByCategory(movies);
+      };
 
       C.start = function () {
         V.renderNavBar("C.handlerAbout()", "C.handlerMovies()");
@@ -72,10 +77,10 @@
       V.renderMovies = function (movies) {
         let listContainer = document.querySelector("#movie-list-container");
         let detailContainer = document.querySelector("#movie-detail-container");
-        
+
         listContainer.style.display = "block";
         detailContainer.style.display = "none";
-        
+
         let content = document.querySelector("#movie-list");
         content.innerHTML = Movie.format(movies);
       };
@@ -83,15 +88,36 @@
       V.renderMovieDetails = function (movie) {
         let listContainer = document.querySelector("#movie-list-container");
         let detailContainer = document.querySelector("#movie-detail-container");
-        
+
         listContainer.style.display = "none";
         detailContainer.style.display = "block";
-        
+
         detailContainer.innerHTML = MovieDetail.format(movie);
+      };
+
+      V.renderMoviesByCategory = function (moviesByCategory) {
+        let listContainer = document.querySelector("#movie-list-container");
+        let detailContainer = document.querySelector("#movie-detail-container");
+
+        listContainer.style.display = "block";
+        detailContainer.style.display = "none";
+
+        let content = document.querySelector("#movie-list");
+        let html = "";
+
+        let categories = Object.keys(moviesByCategory);
+        let i = 0;
+        while (i < categories.length) {
+          let categoryName = categories[i];
+          let movies = moviesByCategory[categoryName];
+          html += MovieCategory.format(categoryName, movies);
+          i++;
+        }
+
+        content.innerHTML = html;
       };
 
       C.start(); // Démarre l'application
     </script>
   </body>
 </html>
-

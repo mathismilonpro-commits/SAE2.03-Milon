@@ -12,14 +12,15 @@ let Movie = {};
  * @returns {string} HTML formaté
  */
 Movie.format = function (movies) {
-  // Gère le cas où un seul film est passé
   if (!Array.isArray(movies)) {
     movies = [movies];
   }
 
   let html = "";
 
-  movies.forEach((movie) => {
+  let i = 0;
+  while (i < movies.length) {
+    let movie = movies[i];
     let movieHtml = template;
 
     movieHtml = movieHtml.replaceAll("{{id}}", movie.id);
@@ -27,7 +28,8 @@ Movie.format = function (movies) {
     movieHtml = movieHtml.replaceAll("{{image}}", movie.image);
 
     html += movieHtml;
-  });
+    i++;
+  }
 
   return html;
 };
