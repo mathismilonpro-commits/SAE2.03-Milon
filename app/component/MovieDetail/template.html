@@ -1,7 +1,5 @@
-<div
-  class="movie"
-  
->
+<div class="movie-detail">
+  <button class="movie-detail__back" onclick="C.handlerMovies()">← Retour à la liste</button>
   <img
     class="movie__image"
     src="/~milon3/SAE2.03-Milon/server/images/{{image}}"
@@ -14,9 +12,12 @@
         <p class="movie__dir">{{director}}</p>
         <p class="movie__year">{{year}}</p>
         <p class="movie__length">Durée: {{length}} min</p>
+        <p class="movie__category">{{category}}</p>
+        <p class="movie__age">Âge minimum: {{min_age}} ans</p>
       </div>
     </div>
     <p class="movie__description">{{description}}</p>
+    <iframe class="movie__trailer" src="{{trailer}}" title="Bande-annonce"></iframe>
   </div>
 </div>
 

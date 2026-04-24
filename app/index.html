@@ -11,16 +11,20 @@
     <header id="header"></header>
 
     <section id="content">
-      <div class="movie__container">
+      <div id="movie-list-container" class="movie__container">
         <div id="movie-list" class="movie__list grid-context gap-m">
           <!-- Les cartes de films movie-card -->
         </div>
+      </div>
+      <div id="movie-detail-container" style="display: none;">
+        <!-- Le détail d'un film -->
       </div>
     </section>
 
     <script type="module">
       import { NavBar } from "./component/NavBar/script.js";
       import { Movie } from "./component/Movie/script.js";
+      import { MovieDetail } from "./component/MovieDetail/script.js";
       import { DataMovie } from "./data/dataMovie.js";
 
       // Controleur
@@ -46,7 +50,7 @@
 
 
       C.start = function () {
-        V.renderNavBar("C.handlerAbout()");
+        V.renderNavBar("C.handlerAbout()", "C.handlerMovies()");
         C.handlerMovies();
       };
 
@@ -60,14 +64,30 @@
        * Elle sélectionne l'élément HTML avec l'ID "header" et y insère le contenu
        * formaté par le composant NavBar.
        */
-      V.renderNavBar = function (hAbout) {
+      V.renderNavBar = function (hAbout, hMovies) {
         let header = document.querySelector("#header");
-        header.innerHTML = NavBar.format(hAbout);
+        header.innerHTML = NavBar.format(hAbout, hMovies);
       };
 
       V.renderMovies = function (movies) {
+        let listContainer = document.querySelector("#movie-list-container");
+        let detailContainer = document.querySelector("#movie-detail-container");
+        
+        listContainer.style.display = "block";
+        detailContainer.style.display = "none";
+        
         let content = document.querySelector("#movie-list");
         content.innerHTML = Movie.format(movies);
+      };
+
+      V.renderMovieDetails = function (movie) {
+        let listContainer = document.querySelector("#movie-list-container");
+        let detailContainer = document.querySelector("#movie-detail-container");
+        
+        listContainer.style.display = "none";
+        detailContainer.style.display = "block";
+        
+        detailContainer.innerHTML = MovieDetail.format(movie);
       };
 
       C.start(); // Démarre l'application

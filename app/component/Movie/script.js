@@ -1,4 +1,6 @@
-let templateFile = await fetch("/~milon3/SAE2.03-Milon/app/component/Movie/template.html");
+let templateFile = await fetch(
+  "/~milon3/SAE2.03-Milon/app/component/Movie/template.html",
+);
 let template = await templateFile.text();
 
 let Movie = {};
@@ -15,21 +17,15 @@ Movie.format = function (movies) {
     movies = [movies];
   }
 
-
   let html = "";
 
   movies.forEach((movie) => {
     let movieHtml = template;
-    
+
     movieHtml = movieHtml.replaceAll("{{id}}", movie.id);
     movieHtml = movieHtml.replaceAll("{{name}}", movie.name);
-    movieHtml = movieHtml.replaceAll("{{director}}", movie.director);
-    movieHtml = movieHtml.replaceAll("{{year}}", movie.year);
-    movieHtml = movieHtml.replaceAll("{{length}}", movie.length);
-
     movieHtml = movieHtml.replaceAll("{{image}}", movie.image);
-    movieHtml = movieHtml.replaceAll("{{description}}", movie.description);
-  
+
     html += movieHtml;
   });
 

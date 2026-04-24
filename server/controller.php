@@ -54,3 +54,18 @@ function readCategoriesController(){
     $categories = getAllCategories();
     return $categories;
 }
+
+function readMovieDetailsController(){
+    if (!isset($_REQUEST['id'])) {
+        return false; // Indique que le paramètre requis est manquant
+    }
+
+    $id = $_REQUEST['id'];
+    $movie = getMovieDetails($id);
+
+    if ($movie === false || $movie === null){
+        return false; // Indique qu'aucun film n'a été trouvé
+    } else {
+        return $movie;
+    }
+}
