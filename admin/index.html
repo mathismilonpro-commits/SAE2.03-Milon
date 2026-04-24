@@ -39,6 +39,9 @@
       V.renderMovieForm = function (handler) {
         let content = document.querySelector("#form");
         content.innerHTML = MovieForm.format(handler);
+        // Charge les catégories et les restrictions d'âge après le rendu du formulaire
+        MovieForm.loadCategories();
+        MovieForm.loadMinAges();
       };
 
       C.start();

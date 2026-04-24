@@ -49,3 +49,8 @@ function addMovieController(){
         return false; // Indique une erreur lors de l'ajout du film
     }
 }
+
+function readCategoriesController(){
+    $categories = getAllCategories();
+    return $categories;
+}

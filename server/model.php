@@ -56,3 +56,17 @@ function addMovie($name, $image, $year, $description, $director, $categorie,$tra
     $affectedRows = $stmt->rowCount();
     return $result; // Retourne true si l'insertion a réussi, sinon false
 }
+
+function getAllCategories(){
+    // Connexion à la base de données
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    // Requête SQL pour récupérer toutes les catégories
+    $sql = "select id, name from SAE203_Category ORDER BY name";
+    // Prépare la requête SQL
+    $stmt = $cnx->prepare($sql);
+    // Exécute la requête SQL
+    $stmt->execute();
+    // Récupère les résultats de la requête sous forme d'objets
+    $res = $stmt->fetchAll(PDO::FETCH_OBJ);
+    return $res; // Retourne les résultats
+}

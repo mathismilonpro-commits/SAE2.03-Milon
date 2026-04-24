@@ -39,6 +39,11 @@
         V.renderMovies(movies);
       };
 
+      C.handlerDetails = async function (id) {
+        let movie = await DataMovie.requestMovieDetails(id);
+        V.renderMovieDetails(movie);
+      };
+
 
       C.start = function () {
         V.renderNavBar("C.handlerAbout()");
