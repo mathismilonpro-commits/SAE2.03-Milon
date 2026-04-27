@@ -1,0 +1,10 @@
+<div class="form">
+    <h2>Ajouter un profil</h2>
+    <form method="POST" class="addProfile__form" onsubmit="event.preventDefault(); {{handler}}()">
+        <input type="text" name="name" placeholder="Nom du profil" required />
+        <input type="text" name="image" placeholder="Nom de l'image utilisateur" required />
+        <input type="number" name="age" placeholder="Âge" required />
+        
+        <button type="submit">Ajouter</button>
+    </form>
+</div>

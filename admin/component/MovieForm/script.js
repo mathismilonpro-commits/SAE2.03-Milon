@@ -13,7 +13,7 @@ MovieForm.format = function (handler) {
 // Template pour une option HTML
 let optionTemplate = '<option value="{{value}}">{{label}}</option>';
 
-MovieForm.getOption = function(value, label) {
+MovieForm.getOption = function (value, label) {
   let html = optionTemplate;
   html = html.replaceAll("{{value}}", value);
   html = html.replaceAll("{{label}}", label);
@@ -21,17 +21,18 @@ MovieForm.getOption = function(value, label) {
 };
 
 // Fonction pour charger les catégories et remplir le select
-MovieForm.loadCategories = async function() {
+MovieForm.loadCategories = async function () {
   try {
     // Récupère les catégories depuis l'API
     let response = await fetch("../server/script.php?todo=readcategories");
     let categories = await response.json();
-    
+
     // Génère les options HTML
-    let optionsHtml = categories.map(category => 
-      MovieForm.getOption(category.name, category.name)
-    ).join('');
-    
+    let optionsHtml = "";
+    for (let category of categories) {
+      optionsHtml += MovieForm.getOption(category.name, category.name);
+    }
+
     let selectElement = document.getElementById("categorie");
     if (selectElement) {
       selectElement.innerHTML = optionsHtml;
@@ -41,14 +42,16 @@ MovieForm.loadCategories = async function() {
   }
 };
 
+
 // Fonction pour charger les restrictions d'âge et remplir le select
-MovieForm.loadMinAges = function() {
+MovieForm.loadMinAges = function () {
   const minAges = [0, 6, 10, 12, 14, 16, 18];
-  
-  let optionsHtml = minAges.map(age => 
-    MovieForm.getOption(age, age + " ans")
-  ).join('');
-  
+
+  let optionsHtml = "";
+  for (let age of minAges) {
+    optionsHtml += MovieForm.getOption(age, age + " ans");
+  }
+
   let selectElement = document.getElementById("min_age");
   if (selectElement) {
     selectElement.innerHTML = optionsHtml;

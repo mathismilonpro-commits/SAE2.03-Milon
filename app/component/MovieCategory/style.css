@@ -1,0 +1,8 @@
+.movie-category {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: var(--color-gray-dark);
+  border-radius: 0.5rem;
+}

@@ -33,6 +33,22 @@ function getAllMovies(){
     return $res; // Retourne les résultats
 }
 
+function addProfile($name, $image, $min_age){
+    // Connexion à la base de données
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    // Requête SQL pour insérer un nouveau profil avec des paramètres
+    $sql = "INSERT INTO SAE203_User (nom, image, restriction_age) VALUES (:name, :image, :min_age)";
+    // Prépare la requête SQL
+    $stmt = $cnx->prepare($sql);
+    // Lie les paramètres à la requête SQL
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':image', $image);
+    $stmt->bindParam(':min_age', $min_age);
+    // Exécute la requête SQL
+    $result = $stmt->execute();
+    return $result; // Retourne true si l'insertion a réussi, sinon false
+}
+
 function addMovie($name, $image, $year, $description, $director, $categorie, $trailer, $min_age, $length){
     // Connexion à la base de données
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);

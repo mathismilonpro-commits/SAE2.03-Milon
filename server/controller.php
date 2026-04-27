@@ -55,6 +55,24 @@ function readCategoriesController(){
     return $categories;
 }
 
+function addProfileController(){
+    if (!isset($_REQUEST['name']) || !isset($_REQUEST['image']) || !isset($_REQUEST['age'])) {
+        return false; // Indique que des paramètres requis sont manquants
+    }
+
+    $name = $_REQUEST['name'];
+    $image = $_REQUEST['image'];
+    $min_age = $_REQUEST['age'];
+
+    $ok = addProfile($name, $image, $min_age);
+
+    if ($ok !=0){
+        return "Le profil $name a été ajouté avec succès !";
+    } else {
+        return false; // Indique une erreur lors de l'ajout du profil
+    }
+}
+
 function readMovieDetailsController(){
     if (!isset($_REQUEST['id'])) {
         return false; // Indique que le paramètre requis est manquant

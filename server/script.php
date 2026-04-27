@@ -76,6 +76,10 @@ if ( isset($_REQUEST['todo']) ){
       $data = addMovieController();
       break;
 
+    case 'addprofile':
+      $data = addProfileController();
+      break;
+
     case 'readmoviesgroupedbycategory':
       $data = readMoviesGroupedByCategoryController();
       break;

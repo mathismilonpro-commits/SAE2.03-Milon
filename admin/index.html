@@ -8,14 +8,24 @@
   </head>
   <body>
     <section id="log"></section>
-    <section id="form"></section>
+    <section id="movieform"></section>
+    <section id="profileform"></section>
 
     <script type="module">
       import { Log } from "./component/Log/script.js";
+      import { DataProfile } from "./data/dataProfile.js";
       import { DataMovie } from "./data/dataMovie.js";
       import { MovieForm } from "./component/MovieForm/script.js";
+      import { ProfileForm } from "./component/ProfileForm/script.js";
 
       window.C = {};
+
+      C.handlerAddProfile = async function () {
+        let form = document.querySelector(".addProfile__form");
+        let fd = new FormData(form);
+        let res = await DataProfile.addProfile(fd);
+        V.renderLog(res);
+      };
 
       C.handlerAddMovie = async function () {
         let form = document.querySelector(".addFilm__form");
@@ -27,6 +37,7 @@
       C.start = function () {
         V.renderLog("Démarrage de l'application");
         V.renderMovieForm("C.handlerAddMovie");
+        V.renderProfileForm("C.handlerAddProfile");
       };
 
       window.V = {};
@@ -37,11 +48,16 @@
       };
 
       V.renderMovieForm = function (handler) {
-        let content = document.querySelector("#form");
+        let content = document.querySelector("#movieform");
         content.innerHTML = MovieForm.format(handler);
         // Charge les catégories et les restrictions d'âge après le rendu du formulaire
         MovieForm.loadCategories();
         MovieForm.loadMinAges();
+      };
+
+      V.renderProfileForm = function (handler) {
+        let content = document.querySelector("#profileform");
+        content.innerHTML = ProfileForm.format(handler);
       };
 
       C.start();
