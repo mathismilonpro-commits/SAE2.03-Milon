@@ -17,6 +17,12 @@ let DataProfile = {};
  * @param {*} fdata un objet FormData contenant les données du formulaire à envoyer au serveur.
  * @returns la réponse du serveur.
  */
+DataProfile.read = async function () {
+    let answer = await fetch(HOST_URL + "server/script.php?todo=readprofile");
+    let data = await answer.json();
+    return data;
+}
+
 DataProfile.addProfile = async function (fdata) {
     // fetch possède un deuxième paramètre (optionnel) qui est un objet de configuration de la requête HTTP:
     //  - method : la méthode HTTP à utiliser (GET, POST...)
@@ -30,5 +36,14 @@ DataProfile.addProfile = async function (fdata) {
     return data;
 }
 
+DataProfile.updateProfile = async function (fdata) {
+    let config = {
+        method: "POST",
+        body: fdata
+    };
+    let answer = await fetch(HOST_URL + "/server/script.php?todo=updateprofile", config);
+    let data = await answer.json();
+    return data;
+}
 
 export {DataProfile};

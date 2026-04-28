@@ -165,3 +165,28 @@ function getMoviesGroupedByCategory($age){
     // On renvoie la structure regroupée par catégorie
     return $grouped;
 }
+
+function updateProfile($id, $name, $image, $restriction_age) {
+    // Connexion à la base de données
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);
+
+    // Requête SQL pour mettre à jour un profil
+    $sql = "REPLACE INTO SAE203_User SET id = :id, nom = :name, image = :image, restriction_age = :restriction_age";
+
+    // Prépare la requête SQL
+    $stmt = $cnx->prepare($sql);
+
+    // Lie les paramètres à la requête SQL
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':image', $image);
+    $stmt->bindParam(':restriction_age', $restriction_age);
+
+    // Exécute la requête SQL
+    $result = $stmt->execute();
+
+    // Récupère le nombre de lignes affectées par la mise à jour
+    $affectedRows = $stmt->rowCount();
+
+    return $result; // Retourne true si la mise à jour a réussi, sinon false
+}

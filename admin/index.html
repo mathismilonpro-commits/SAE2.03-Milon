@@ -20,11 +20,24 @@
 
       window.C = {};
 
-      C.handlerAddProfile = async function () {
+      C.handlerSubmitProfile = async function () {
         let form = document.querySelector(".addProfile__form");
         let fd = new FormData(form);
-        let res = await DataProfile.addProfile(fd);
+        let id = fd.get("id");
+
+        let res;
+        if (id) {
+          res = await DataProfile.updateProfile(fd);
+        } else {
+          res = await DataProfile.addProfile(fd);
+        }
         V.renderLog(res);
+        let profiles = await DataProfile.read();
+        V.renderProfileForm(profiles);
+      };
+
+      C.handlerSelectProfile = function (select) {
+        ProfileForm.prefill(select);
       };
 
       C.handlerAddMovie = async function () {
@@ -34,10 +47,11 @@
         V.renderLog(res);
       };
 
-      C.start = function () {
+      C.start = async function () {
         V.renderLog("Démarrage de l'application");
         V.renderMovieForm("C.handlerAddMovie");
-        V.renderProfileForm("C.handlerAddProfile");
+        let profiles = await DataProfile.read();
+        V.renderProfileForm(profiles);
       };
 
       window.V = {};
@@ -55,9 +69,9 @@
         MovieForm.loadMinAges();
       };
 
-      V.renderProfileForm = function (handler) {
+      V.renderProfileForm = function (profiles) {
         let content = document.querySelector("#profileform");
-        content.innerHTML = ProfileForm.format(handler);
+        content.innerHTML = ProfileForm.format("C.handlerSubmitProfile", "C.handlerSelectProfile", profiles);
       };
 
       C.start();

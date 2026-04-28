@@ -56,13 +56,13 @@ function readCategoriesController(){
 }
 
 function addProfileController(){
-    if (!isset($_REQUEST['name']) || !isset($_REQUEST['image']) || !isset($_REQUEST['age'])) {
+    if (!isset($_REQUEST['name']) || !isset($_REQUEST['restriction_age'])) {
         return false; // Indique que des paramètres requis sont manquants
     }
 
     $name = $_REQUEST['name'];
-    $image = $_REQUEST['image'];
-    $min_age = $_REQUEST['age'];
+    $image = $_REQUEST['image'] ?? '';
+    $min_age = $_REQUEST['restriction_age'];
 
     $ok = addProfile($name, $image, $min_age);
 
@@ -107,4 +107,23 @@ function readMoviesGroupedByCategoryController(){
         return false; // Indique une erreur dans le traitement de la requête
     }
     return $movies;
+}
+
+function updateProfileController(){
+    if (!isset($_REQUEST['id']) || !isset($_REQUEST['name']) || !isset($_REQUEST['image']) || !isset($_REQUEST['restriction_age'])) {
+        return false; // Indique que des paramètres requis sont manquants
+    }
+
+    $id = $_REQUEST['id'];
+    $name = $_REQUEST['name'];
+    $image = $_REQUEST['image'];
+    $restriction_age = $_REQUEST['restriction_age'];
+
+    $ok = updateProfile($id, $name, $image, $restriction_age);
+
+    if ($ok !=0){
+        return "Le profil $name a été mis à jour avec succès !";
+    } else {
+        return false; // Indique une erreur lors de la mise à jour du profil
+    }
 }
