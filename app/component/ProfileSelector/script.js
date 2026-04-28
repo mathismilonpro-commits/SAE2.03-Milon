@@ -13,6 +13,7 @@ ProfileSelector.format = function (profiles) {
 
     cardHtml = cardHtml.replaceAll("{{id}}", p.id);
     cardHtml = cardHtml.replaceAll("{{nom}}", p.nom);
+    cardHtml = cardHtml.replaceAll("{{restriction_age}}", p.restriction_age);
     let imageHtml = p.image
       ? `<img class="profile-card__image" src="/~milon3/SAE2.03-Milon/server/images/${p.image}" alt="${p.nom}">`
       : "";

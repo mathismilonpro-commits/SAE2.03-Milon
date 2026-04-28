@@ -117,7 +117,7 @@ function getMovieDetails($id){
     return $res;
 }
 
-function getMoviesGroupedByCategory(){
+function getMoviesGroupedByCategory($age){
     // Connexion à la base de données
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
 
@@ -125,10 +125,12 @@ function getMoviesGroupedByCategory(){
     $sql = "SELECT m.id, m.name, m.image, c.name AS category_name 
             FROM SAE203_Movie m
             JOIN SAE203_Category c ON m.id_category = c.id
+            WHERE m.min_age <= :age
             ORDER BY c.name, m.name";
     
     // Préparation puis exécution de la requête SQL
     $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':age', $age);
     $stmt->execute();
 
     // Résultat sous forme d'objets PHP (un objet par ligne)

@@ -34,6 +34,7 @@
       window.C = {};
       C.activeProfileId = null;
       C.activeProfileName = null;
+      C.activeProfileAge = 0;
 
       C.handlerAbout = function () {
         alert(
@@ -41,16 +42,19 @@
         );
       };
 
-      C.handlerSelectProfile = function (id, name) {
+      C.handlerSelectProfile = async function (id, name, age) {
         C.activeProfileId = id;
         C.activeProfileName = name;
+        C.activeProfileAge = age;
         document.querySelector("#profile-overlay").style.display = "none";
         V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", name);
+        await C.handlerMovies();
       };
 
       C.handlerChangeProfile = async function () {
         C.activeProfileId = null;
         C.activeProfileName = null;
+        C.activeProfileAge = 0;
         V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", null);
         let profiles = await DataProfile.read();
         V.renderProfiles(profiles);
@@ -62,14 +66,14 @@
       };
 
       C.handlerMovies = async function () {
-        let movies = await DataMovie.requestMoviesGroupedByCategory();
+        let movies = await DataMovie.requestMoviesGroupedByCategory(C.activeProfileAge);
         V.renderMoviesByCategory(movies);
       };
 
       C.start = async function () {
         V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", null);
         let [movies, profiles] = await Promise.all([
-          DataMovie.requestMoviesGroupedByCategory(),
+          DataMovie.requestMoviesGroupedByCategory(0),
           DataProfile.read()
         ]);
         V.renderMoviesByCategory(movies);

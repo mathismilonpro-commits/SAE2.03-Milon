@@ -99,7 +99,9 @@ function readMovieDetailsController(){
 }
 
 function readMoviesGroupedByCategoryController(){
-    $movies = getMoviesGroupedByCategory();
+    $age = isset($_REQUEST['age']) ? (int)$_REQUEST['age'] : 0;
+
+    $movies = getMoviesGroupedByCategory($age);
 
     if ($movies === false || $movies === null) {
         return false; // Indique une erreur dans le traitement de la requête
