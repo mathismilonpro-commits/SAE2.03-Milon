@@ -73,6 +73,16 @@ function addProfileController(){
     }
 }
 
+function readProfileController(){
+    $profiles = getAllProfiles();
+
+    if ($profiles === false || $profiles === null) {
+        return false; // Indique une erreur dans le traitement de la requête
+    }
+    
+    return $profiles;
+}
+
 function readMovieDetailsController(){
     if (!isset($_REQUEST['id'])) {
         return false; // Indique que le paramètre requis est manquant

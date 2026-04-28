@@ -80,6 +80,10 @@ if ( isset($_REQUEST['todo']) ){
       $data = addProfileController();
       break;
 
+    case 'readprofile':
+      $data = readProfileController();
+      break;
+
     case 'readmoviesgroupedbycategory':
       $data = readMoviesGroupedByCategoryController();
       break;

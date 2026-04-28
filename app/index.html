@@ -10,15 +10,13 @@
   <body>
     <header id="header"></header>
 
+    <div id="profile-overlay" class="flex-context flex-center"></div>
+
     <section id="content">
       <div id="movie-list-container" class="movie__container">
-        <div id="movie-list" class="movie__list grid-context gap-m">
-          <!-- Les cartes de films movie-card -->
-        </div>
+        <div id="movie-list" class="movie__list grid-context gap-m"></div>
       </div>
-      <div id="movie-detail-container" style="display: none">
-        <!-- Le détail d'un film -->
-      </div>
+      <div id="movie-detail-container" style="display: none"></div>
     </section>
 
     <script type="module">
@@ -27,11 +25,15 @@
       import { MovieDetail } from "./component/MovieDetail/script.js";
       import { DataMovie } from "./data/dataMovie.js";
       import { MovieCategory } from "./component/MovieCategory/script.js";
+      import { DataProfile } from "./data/dataProfile.js";
+      import { ProfileSelector } from "./component/ProfileSelector/script.js";
 
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
       // Une fois l'application terminée, on pourrait remettre let C.
       window.C = {};
+      C.activeProfileId = null;
+      C.activeProfileName = null;
 
       C.handlerAbout = function () {
         alert(
@@ -39,9 +41,19 @@
         );
       };
 
-      C.handlerMovies = async function () {
-        let movies = await DataMovie.requestMovies();
-        V.renderMovies(movies);
+      C.handlerSelectProfile = function (id, name) {
+        C.activeProfileId = id;
+        C.activeProfileName = name;
+        document.querySelector("#profile-overlay").style.display = "none";
+        V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", name);
+      };
+
+      C.handlerChangeProfile = async function () {
+        C.activeProfileId = null;
+        C.activeProfileName = null;
+        V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", null);
+        let profiles = await DataProfile.read();
+        V.renderProfiles(profiles);
       };
 
       C.handlerDetails = async function (id) {
@@ -54,9 +66,14 @@
         V.renderMoviesByCategory(movies);
       };
 
-      C.start = function () {
-        V.renderNavBar("C.handlerAbout()", "C.handlerMovies()");
-        C.handlerMovies();
+      C.start = async function () {
+        V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", null);
+        let [movies, profiles] = await Promise.all([
+          DataMovie.requestMoviesGroupedByCategory(),
+          DataProfile.read()
+        ]);
+        V.renderMoviesByCategory(movies);
+        V.renderProfiles(profiles);
       };
 
       // Vue (contient tout ce qui est relatif à l'affichage)
@@ -69,9 +86,15 @@
        * Elle sélectionne l'élément HTML avec l'ID "header" et y insère le contenu
        * formaté par le composant NavBar.
        */
-      V.renderNavBar = function (hAbout, hMovies) {
+      V.renderNavBar = function (hAbout, hMovies, hProfile, profileLabel) {
         let header = document.querySelector("#header");
-        header.innerHTML = NavBar.format(hAbout, hMovies);
+        header.innerHTML = NavBar.format(hAbout, hMovies, hProfile, profileLabel);
+      };
+
+      V.renderProfiles = function (profiles) {
+        let overlay = document.querySelector("#profile-overlay");
+        overlay.innerHTML = ProfileSelector.format(profiles);
+        overlay.style.display = "flex";
       };
 
       V.renderMovies = function (movies) {
