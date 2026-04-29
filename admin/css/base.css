@@ -1,7 +1,10 @@
-@layer reset, variables, components, utilities;
+@layer reset, variables, layout, utilities, components;
 
 @import "./reset.css" layer(reset);
 @import "./variables.css" layer(variables);
+@import "./layout.css" layer(layout);
 @import "./utilities.css" layer(utilities);
 
 @import "../component/Log/style.css" layer(components);
+@import "../component/MovieForm/style.css" layer(components);
+@import "../component/ProfileForm/style.css" layer(components);

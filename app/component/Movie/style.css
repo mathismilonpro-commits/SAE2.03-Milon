@@ -1,14 +1,12 @@
 .movie {
-  max-width: 10rem;
-  display: flex;
-  flex-direction: column;
+  flex: 0 0 9rem;
   gap: 0.5rem;
-  padding: 1rem;
+  padding: 0.5rem;
   background-color: var(--color-gray-dark);
   border-radius: 0.5rem;
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
-  
+  scroll-snap-align: start;
 }
 
 .movie__list {
@@ -28,6 +26,11 @@
   aspect-ratio: 2 / 3;
   object-fit: cover;
   border-radius: 0.25rem;
+}
+
+.movie__image--missing {
+  background-color: var(--color-gray);
+  display: block;
 }
 
 .movie__title {

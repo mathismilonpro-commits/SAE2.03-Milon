@@ -9,3 +9,8 @@ ul {
   margin: 0;
   list-style: none;
 }
+
+body {
+  background-color: var(--color-black);
+  color: var(--color-fg);
+}

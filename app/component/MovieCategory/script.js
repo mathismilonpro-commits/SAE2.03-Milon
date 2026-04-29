@@ -16,4 +16,16 @@ MovieCategory.format = function (categoryName, movies) {
   return categoryHtml;
 };
 
+MovieCategory.attachWheelListeners = function () {
+  let lists = document.querySelectorAll(".movie-category__list");
+  let i = 0;
+  while (i < lists.length) {
+    lists[i].addEventListener("wheel", function (e) {
+      e.preventDefault();
+      this.scrollLeft += e.deltaY;
+    }, { passive: false });
+    i++;
+  }
+};
+
 export { MovieCategory };

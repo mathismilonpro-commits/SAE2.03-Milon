@@ -1,8 +1,25 @@
 .movie-category {
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  padding: 1rem;
-  background-color: var(--color-gray-dark);
-  border-radius: 0.5rem;
+  min-width: 0;
+  padding: 1rem 0;
+}
+
+.movie-category__title {
+  padding: 0 1rem;
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-fg);
+}
+
+.movie-category__list {
+  width: 100%;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0.5rem 1rem;
+  scrollbar-width: none;
+}
+
+.movie-category__list::-webkit-scrollbar {
+  display: none;
 }

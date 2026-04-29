@@ -1,14 +1,14 @@
-<div class="movie-detail">
+<div class="movie-detail flex-context flex-column">
   <button class="movie-detail__back" onclick="C.handlerMovies()">← Retour à la liste</button>
   <img
     class="movie__image"
     src="/~milon3/SAE2.03-Milon/server/images/{{image}}"
     alt="{{name}}"
   />
-  <div class="movie__info">
-    <div class="movie__header">
+  <div class="movie__info flex-context flex-column gap-m">
+    <div class="movie__header flex-context flex-column">
       <h3 class="movie__title">{{name}}</h3>
-      <div class="movie__time">
+      <div class="movie__time flex-context flex-row flex-wrap gap-m">
         <p class="movie__dir">{{director}}</p>
         <p class="movie__year">{{year}}</p>
         <p class="movie__length">Durée: {{length}} min</p>

@@ -10,9 +10,17 @@
   --color-green: hsl(120, 100%, 37%);
 
   --ff-sans: "DM sans", sans-serif;
+  --font-size-1: 1rem;
+  --font-weight-700: 700;
+  --space-15: 1.5rem;
+  --space-075: 0.75rem;
 
   /* Sementic Tokens */
   --color-fg: var(--color-white);
   --color-bg: var(--color-gray-dark);
   --color-accent: var(--color-green);
+  --font-size-base: var(--font-size-1);
+  --font-weight-bold: var(--font-weight-700);
+  --space-m: var(--space-15);
+  --space-xs: var(--space-075);
 }
