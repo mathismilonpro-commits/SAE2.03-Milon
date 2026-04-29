@@ -166,6 +166,39 @@ function getMoviesGroupedByCategory($age){
     return $grouped;
 }
 
+function addFavorite($user_id, $movie_id) {
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "INSERT IGNORE INTO SAE203_Favorite (id_user, id_movie) VALUES (:user_id, :movie_id)";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->bindParam(':movie_id', $movie_id);
+    $result = $stmt->execute();
+    return $result;
+}
+
+function getFavorites($user_id) {
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT m.id, m.name, m.image
+            FROM SAE203_Favorite f
+            JOIN SAE203_Movie m ON f.id_movie = m.id
+            WHERE f.id_user = :user_id
+            ORDER BY m.name";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
+function removeFavorite($user_id, $movie_id) {
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "DELETE FROM SAE203_Favorite WHERE id_user = :user_id AND id_movie = :movie_id";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->bindParam(':movie_id', $movie_id);
+    $result = $stmt->execute();
+    return $result;
+}
+
 function updateProfile($id, $name, $image, $restriction_age) {
     // Connexion à la base de données
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, DBLOGIN, DBPWD);

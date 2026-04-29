@@ -17,10 +17,23 @@
 
   /* Sementic Tokens */
   --color-fg: var(--color-white);
-  --color-bg: var(--color-gray-dark);
+  --color-bg: var(--color-black);
+  --color-surface: var(--color-gray-dark);
+  --color-border: hsl(0, 0%, 30%);
   --color-accent: var(--color-green);
+  --color-accent-hover: hsl(120, 100%, 28%);
+  --color-input-bg: hsl(0, 0%, 12%);
   --font-size-base: var(--font-size-1);
+  --font-size-sm: 0.875rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.75rem;
   --font-weight-bold: var(--font-weight-700);
   --space-m: var(--space-15);
   --space-xs: var(--space-075);
+  --space-s: 1rem;
+  --space-l: 2rem;
+  --space-xl: 3rem;
+  --radius-s: 4px;
+  --radius-m: 8px;
+  --transition: 150ms ease;
 }

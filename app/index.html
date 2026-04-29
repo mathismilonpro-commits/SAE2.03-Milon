@@ -27,14 +27,13 @@
       import { MovieCategory } from "./component/MovieCategory/script.js";
       import { DataProfile } from "./data/dataProfile.js";
       import { ProfileSelector } from "./component/ProfileSelector/script.js";
+      import { DataFavorite } from "./data/dataFavorite.js";
 
-      // Controleur
-      // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
-      // Une fois l'application terminée, on pourrait remettre let C.
       window.C = {};
       C.activeProfileId = null;
       C.activeProfileName = null;
       C.activeProfileAge = 0;
+      C.activeFavorites = new Set(); // IDs des films favoris du profil actif
 
       C.handlerAbout = function () {
         alert(
@@ -46,8 +45,10 @@
         C.activeProfileId = id;
         C.activeProfileName = name;
         C.activeProfileAge = age;
+        let favorites = await DataFavorite.read(id);
+        C.activeFavorites = new Set(favorites.map(f => f.id));
         document.querySelector("#profile-overlay").style.display = "none";
-        V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", name);
+        V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", name, "C.handlerFavorites()");
         await C.handlerMovies();
       };
 
@@ -55,14 +56,40 @@
         C.activeProfileId = null;
         C.activeProfileName = null;
         C.activeProfileAge = 0;
-        V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", null);
+        C.activeFavorites = new Set();
+        V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", null, "C.handlerFavorites()");
         let profiles = await DataProfile.read();
         V.renderProfiles(profiles);
       };
 
       C.handlerDetails = async function (id) {
         let movie = await DataMovie.requestMovieDetails(id);
-        V.renderMovieDetails(movie);
+        let isFavorite = C.activeFavorites.has(movie.id);
+        V.renderMovieDetails(movie, isFavorite);
+      };
+
+      C.handlerToggleFavorite = async function (movieId, checkbox) {
+        if (!C.activeProfileId) {
+          checkbox.checked = !checkbox.checked; // annule le changement visuellement
+          alert("Veuillez sélectionner un profil pour gérer vos favoris.");
+          return;
+        }
+        if (checkbox.checked) {
+          await DataFavorite.add(C.activeProfileId, movieId);
+          C.activeFavorites.add(movieId);
+        } else {
+          await DataFavorite.remove(C.activeProfileId, movieId);
+          C.activeFavorites.delete(movieId);
+        }
+      };
+
+      C.handlerFavorites = async function () {
+        if (!C.activeProfileId) {
+          alert("Veuillez sélectionner un profil pour voir vos favoris.");
+          return;
+        }
+        let favorites = await DataFavorite.read(C.activeProfileId);
+        V.renderFavorites(favorites);
       };
 
       C.handlerMovies = async function () {
@@ -71,7 +98,7 @@
       };
 
       C.start = async function () {
-        V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", null);
+        V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", null, "C.handlerFavorites()");
         let [movies, profiles] = await Promise.all([
           DataMovie.requestMoviesGroupedByCategory(0),
           DataProfile.read()
@@ -80,19 +107,11 @@
         V.renderProfiles(profiles);
       };
 
-      // Vue (contient tout ce qui est relatif à l'affichage)
       window.V = {};
 
-      /**
-       * V.renderNavBar
-       *
-       * Cette fonction est responsable de l'affichage de la barre de navigation (NavBar).
-       * Elle sélectionne l'élément HTML avec l'ID "header" et y insère le contenu
-       * formaté par le composant NavBar.
-       */
-      V.renderNavBar = function (hAbout, hMovies, hProfile, profileLabel) {
+      V.renderNavBar = function (hAbout, hMovies, hProfile, profileLabel, hFavorites) {
         let header = document.querySelector("#header");
-        header.innerHTML = NavBar.format(hAbout, hMovies, hProfile, profileLabel);
+        header.innerHTML = NavBar.format(hAbout, hMovies, hProfile, profileLabel, hFavorites);
       };
 
       V.renderProfiles = function (profiles) {
@@ -104,34 +123,45 @@
       V.renderMovies = function (movies) {
         let listContainer = document.querySelector("#movie-list-container");
         let detailContainer = document.querySelector("#movie-detail-container");
-
         listContainer.style.display = "block";
         detailContainer.style.display = "none";
-
         let content = document.querySelector("#movie-list");
         content.innerHTML = Movie.format(movies);
       };
 
-      V.renderMovieDetails = function (movie) {
+      V.renderMovieDetails = function (movie, isFavorite) {
         let listContainer = document.querySelector("#movie-list-container");
         let detailContainer = document.querySelector("#movie-detail-container");
-
         listContainer.style.display = "none";
         detailContainer.style.display = "block";
+        detailContainer.innerHTML = MovieDetail.format(
+          movie,
+          `C.handlerToggleFavorite(${movie.id}, this)`,
+          isFavorite
+        );
+      };
 
-        detailContainer.innerHTML = MovieDetail.format(movie);
+      V.renderFavorites = function (favorites) {
+        let listContainer = document.querySelector("#movie-list-container");
+        let detailContainer = document.querySelector("#movie-detail-container");
+        listContainer.style.display = "block";
+        detailContainer.style.display = "none";
+        let content = document.querySelector("#movie-list");
+        if (favorites.length === 0) {
+          content.innerHTML = "<p class='empty-favorites'>Aucun film dans vos favoris.</p>";
+        } else {
+          content.innerHTML = MovieCategory.format("♥ Mes favoris", favorites);
+          MovieCategory.attachWheelListeners();
+        }
       };
 
       V.renderMoviesByCategory = function (moviesByCategory) {
         let listContainer = document.querySelector("#movie-list-container");
         let detailContainer = document.querySelector("#movie-detail-container");
-
         listContainer.style.display = "block";
         detailContainer.style.display = "none";
-
         let content = document.querySelector("#movie-list");
         let html = "";
-
         let categories = Object.keys(moviesByCategory);
         let i = 0;
         while (i < categories.length) {
@@ -140,12 +170,11 @@
           html += MovieCategory.format(categoryName, movies);
           i++;
         }
-
         content.innerHTML = html;
         MovieCategory.attachWheelListeners();
       };
 
-      C.start(); // Démarre l'application
+      C.start();
     </script>
   </body>
 </html>

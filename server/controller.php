@@ -109,6 +109,46 @@ function readMoviesGroupedByCategoryController(){
     return $movies;
 }
 
+function addFavoriteController(){
+    if (!isset($_REQUEST['user_id']) || !isset($_REQUEST['movie_id'])) {
+        return false;
+    }
+    $user_id  = $_REQUEST['user_id'];
+    $movie_id = $_REQUEST['movie_id'];
+    $ok = addFavorite($user_id, $movie_id);
+    if ($ok) {
+        return "Film ajouté aux favoris.";
+    } else {
+        return false;
+    }
+}
+
+function readFavoritesController(){
+    if (!isset($_REQUEST['user_id'])) {
+        return false;
+    }
+    $user_id = $_REQUEST['user_id'];
+    $favorites = getFavorites($user_id);
+    if ($favorites === false) {
+        return false;
+    }
+    return $favorites;
+}
+
+function removeFavoriteController(){
+    if (!isset($_REQUEST['user_id']) || !isset($_REQUEST['movie_id'])) {
+        return false;
+    }
+    $user_id  = $_REQUEST['user_id'];
+    $movie_id = $_REQUEST['movie_id'];
+    $ok = removeFavorite($user_id, $movie_id);
+    if ($ok) {
+        return "Film retiré des favoris.";
+    } else {
+        return false;
+    }
+}
+
 function updateProfileController(){
     if (!isset($_REQUEST['id']) || !isset($_REQUEST['name']) || !isset($_REQUEST['image']) || !isset($_REQUEST['restriction_age'])) {
         return false; // Indique que des paramètres requis sont manquants

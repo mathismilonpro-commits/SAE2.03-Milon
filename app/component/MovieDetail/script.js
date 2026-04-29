@@ -9,7 +9,7 @@ let MovieDetail = {};
  * @param {Object} movie - Les détails du film
  * @returns {string} HTML formaté
  */
-MovieDetail.format = function (movie) {
+MovieDetail.format = function (movie, handlerFavorite, isFavorite) {
   let html = template;
 
   html = html.replaceAll("{{name}}", movie.name);
@@ -21,6 +21,8 @@ MovieDetail.format = function (movie) {
   html = html.replaceAll("{{description}}", movie.description);
   html = html.replaceAll("{{trailer}}", movie.trailer);
   html = html.replaceAll("{{min_age}}", movie.min_age);
+  html = html.replaceAll("{{handlerFavorite}}", handlerFavorite ?? "");
+  html = html.replaceAll("{{favoriteChecked}}", isFavorite ? "checked" : "");
 
   return html;
 };
