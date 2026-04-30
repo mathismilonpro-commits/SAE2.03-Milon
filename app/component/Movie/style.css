@@ -1,5 +1,5 @@
 .movie {
-  flex: 0 0 9rem;
+  flex: 0 0 7rem;
   gap: 0.5rem;
   padding: 0.5rem;
   background-color: var(--color-gray-dark);
@@ -11,14 +11,13 @@
 
 .movie__list {
   max-width: 1200px;
-  margin: 2rem auto;
+  margin: 1rem auto;
   grid-template-columns: 1fr;
 }
 
 .movie:hover {
   transform: scale(1.05);
 }
-
 
 .movie__image {
   width: 100%;
@@ -35,9 +34,36 @@
 
 .movie__title {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: var(--color-fg);
   line-height: 1.2;
 }
 
+@media (min-width: 640px) {
+  .movie {
+    flex: 0 0 8rem;
+  }
+
+  .movie__list {
+    margin: 1.5rem auto;
+  }
+
+  .movie__title {
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .movie {
+    flex: 0 0 9rem;
+  }
+
+  .movie__list {
+    margin: 2rem auto;
+  }
+
+  .movie__title {
+    font-size: 1rem;
+  }
+}

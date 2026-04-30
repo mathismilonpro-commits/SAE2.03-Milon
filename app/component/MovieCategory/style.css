@@ -1,12 +1,12 @@
 .movie-category {
   min-width: 0;
-  padding: 1rem 0;
+  padding: 0.5rem 0;
 }
 
 .movie-category__title {
-  padding: 0 1rem;
+  padding: 0 0.75rem;
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--color-fg);
 }
@@ -16,10 +16,35 @@
   flex-wrap: nowrap;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.75rem;
   scrollbar-width: none;
 }
 
 .movie-category__list::-webkit-scrollbar {
   display: none;
+}
+
+@media (min-width: 640px) {
+  .movie-category {
+    padding: 0.75rem 0;
+  }
+
+  .movie-category__title {
+    padding: 0 1rem;
+    font-size: 1.125rem;
+  }
+
+  .movie-category__list {
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .movie-category {
+    padding: 1rem 0;
+  }
+
+  .movie-category__title {
+    font-size: 1.25rem;
+  }
 }

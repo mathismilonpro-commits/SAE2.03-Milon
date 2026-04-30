@@ -14,18 +14,20 @@
   max-width: fit-content;
   margin: 1rem auto;
   color: var(--color-fg);
-  padding: 2rem 3rem;
+  padding: 1rem 1.5rem;
   text-align: center;
+  font-size: 1.25rem;
 }
 
 .profile-selector__list {
-  padding: 0 3rem;
+  padding: 0 1rem;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .profile-card {
   gap: 0.5rem;
-  padding: 1rem;
+  padding: 0.75rem;
   background-color: var(--color-gray-dark);
   border-radius: 0.5rem;
   cursor: pointer;
@@ -37,8 +39,8 @@
 }
 
 .profile-card__avatar {
-  width: 4rem;
-  height: 4rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
 }
 
@@ -52,14 +54,57 @@
   justify-content: center;
   background-color: var(--color-gray);
   color: var(--color-white);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: var(--font-weight-bold);
 }
 
 .profile-card__name {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 700;
   color: var(--color-fg);
   text-align: center;
+}
+
+@media (min-width: 640px) {
+  .profile-selector__title {
+    padding: 1.5rem 2rem;
+    font-size: 1.5rem;
+  }
+
+  .profile-selector__list {
+    padding: 0 2rem;
+  }
+
+  .profile-card {
+    padding: 1rem;
+  }
+
+  .profile-card__avatar {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .profile-card__name {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .profile-selector__title {
+    padding: 2rem 3rem;
+  }
+
+  .profile-selector__list {
+    padding: 0 3rem;
+  }
+
+  .profile-card__avatar {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .profile-card__avatar--letter {
+    font-size: 1.5rem;
+  }
 }

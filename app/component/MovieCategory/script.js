@@ -1,7 +1,7 @@
 import { Movie } from "../Movie/script.js";
 
 let templateFile = await fetch(
-  "/~milon3/SAE2.03-Milon/app/component/MovieCategory/template.html",
+  "./component/MovieCategory/template.html",
 );
 let template = await templateFile.text();
 

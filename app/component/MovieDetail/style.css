@@ -1,15 +1,15 @@
 .movie-detail {
-  gap: 2rem;
-  padding: 2rem;
+  gap: 1rem;
+  padding: 1rem;
   background-color: var(--color-bg);
   border-radius: 0.5rem;
   max-width: 900px;
-  margin: 2rem auto;
+  margin: 1rem;
 }
 
 .movie-detail__back {
   align-self: flex-start;
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem;
   background-color: var(--color-gray-dark);
   color: var(--color-fg);
   border: none;
@@ -26,7 +26,7 @@
 
 .movie-detail > img {
   width: 100%;
-  max-width: 400px;
+  max-width: 220px;
   height: auto;
   aspect-ratio: 2 / 3;
   object-fit: cover;
@@ -35,12 +35,12 @@
 }
 
 .movie-detail .movie__header {
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .movie-detail .movie__title {
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.25rem;
   font-weight: var(--font-weight-bold);
   color: var(--color-fg);
   line-height: 1.2;
@@ -56,21 +56,21 @@
 .movie-detail .movie__age,
 .movie-detail .movie__category {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: var(--color-gray-light);
   line-height: 1.5;
 }
 
 .movie-detail .movie__description {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--color-fg);
   line-height: 1.6;
 }
 
 .movie-detail .movie__trailer {
   width: 100%;
-  height: 500px;
+  height: 200px;
   border: none;
   border-radius: 0.5rem;
   background-color: var(--color-black);
@@ -81,7 +81,7 @@
   align-items: center;
   align-self: flex-start;
   gap: 0.4rem;
-  padding: 0.6rem 1.25rem;
+  padding: 0.5rem 1rem;
   border: 2px solid var(--color-gray);
   border-radius: 2rem;
   cursor: pointer;
@@ -115,4 +115,72 @@
 .movie-detail__favorite:has(input:checked):hover {
   background-color: hsl(350, 75%, 38%);
   border-color: hsl(350, 75%, 38%);
+}
+
+@media (min-width: 640px) {
+  .movie-detail {
+    gap: 1.5rem;
+    padding: 1.5rem;
+    margin: 1.5rem auto;
+  }
+
+  .movie-detail__back {
+    padding: 0.6rem 1.25rem;
+  }
+
+  .movie-detail > img {
+    max-width: 300px;
+  }
+
+  .movie-detail .movie__header {
+    gap: 0.75rem;
+  }
+
+  .movie-detail .movie__title {
+    font-size: 1.5rem;
+  }
+
+  .movie-detail .movie__dir,
+  .movie-detail .movie__year,
+  .movie-detail .movie__length,
+  .movie-detail .movie__age,
+  .movie-detail .movie__category {
+    font-size: 0.875rem;
+  }
+
+  .movie-detail .movie__description {
+    font-size: 1rem;
+  }
+
+  .movie-detail .movie__trailer {
+    height: 350px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .movie-detail {
+    gap: 2rem;
+    padding: 2rem;
+    margin: 2rem auto;
+  }
+
+  .movie-detail__back {
+    padding: 0.75rem 1.5rem;
+  }
+
+  .movie-detail > img {
+    max-width: 400px;
+  }
+
+  .movie-detail .movie__header {
+    gap: 1rem;
+  }
+
+  .movie-detail .movie__title {
+    font-size: 2rem;
+  }
+
+  .movie-detail .movie__trailer {
+    height: 500px;
+  }
 }

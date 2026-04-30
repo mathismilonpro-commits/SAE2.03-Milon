@@ -1,5 +1,5 @@
 let templateFile = await fetch(
-  "/~milon3/SAE2.03-Milon/app/component/Movie/template.html",
+  "./component/Movie/template.html",
 );
 let template = await templateFile.text();
 
