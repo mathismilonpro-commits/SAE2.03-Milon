@@ -1,6 +1,15 @@
 let templateFile = await fetch("./component/ProfileSelector/template.html");
 let template = await templateFile.text();
 
+let templateAvatarImgFile = await fetch("./component/ProfileSelector/template-avatar-img.html");
+let templateAvatarImg = await templateAvatarImgFile.text();
+
+let templateAvatarLetterFile = await fetch("./component/ProfileSelector/template-avatar-letter.html");
+let templateAvatarLetter = await templateAvatarLetterFile.text();
+
+let templateListFile = await fetch("./component/ProfileSelector/template-list.html");
+let templateList = await templateListFile.text();
+
 let ProfileSelector = {};
 
 ProfileSelector.format = function (profiles) {
@@ -14,17 +23,24 @@ ProfileSelector.format = function (profiles) {
     cardHtml = cardHtml.replaceAll("{{id}}", p.id);
     cardHtml = cardHtml.replaceAll("{{nom}}", p.nom);
     cardHtml = cardHtml.replaceAll("{{restriction_age}}", p.restriction_age);
-    let imageHtml = p.image
-      ? `<img class="profile-card__image" src="/~milon3/SAE2.03-Milon/server/images/${p.image}" alt="${p.nom}">`
-      : "";
-    cardHtml = cardHtml.replaceAll("{{image}}", imageHtml);
+
+    let avatarHtml;
+    if (p.image) {
+      avatarHtml = templateAvatarImg;
+      avatarHtml = avatarHtml.replaceAll("{{image}}", p.image);
+      avatarHtml = avatarHtml.replaceAll("{{nom}}", p.nom);
+    } else {
+      avatarHtml = templateAvatarLetter;
+      avatarHtml = avatarHtml.replaceAll("{{letter}}", p.nom.charAt(0).toUpperCase());
+    }
+    cardHtml = cardHtml.replaceAll("{{avatar}}", avatarHtml);
 
     cards += cardHtml;
     i++;
   }
 
-  let html = '<h2 class="profile-selector__title">Qui regarde ?</h2>';
-  html += `<div class="profile-selector__list flex-context flex-center gap-m">${cards}</div>`;
+  let html = templateList;
+  html = html.replaceAll("{{cards}}", cards);
 
   return html;
 };

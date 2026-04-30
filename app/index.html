@@ -11,6 +11,7 @@
     <header id="header"></header>
 
     <div id="profile-overlay" class="flex-context flex-center"></div>
+    <div id="error"></div>
 
     <section id="content">
       <div id="movie-list-container" class="movie__container">
@@ -28,6 +29,7 @@
       import { DataProfile } from "./data/dataProfile.js";
       import { ProfileSelector } from "./component/ProfileSelector/script.js";
       import { DataFavorite } from "./data/dataFavorite.js";
+      import { Notif } from "./component/Error/script.js";
 
       window.C = {};
       C.activeProfileId = null;
@@ -73,8 +75,8 @@
 
       C.handlerToggleFavorite = async function (movieId, checkbox) {
         if (!C.activeProfileId) {
-          checkbox.checked = !checkbox.checked; // annule le changement visuellement
-          alert("Veuillez sélectionner un profil pour gérer vos favoris.");
+          checkbox.checked = !checkbox.checked;
+          Notif.show("Veuillez sélectionner un profil pour gérer vos favoris.");
           return;
         }
         if (checkbox.checked) {
@@ -88,7 +90,7 @@
 
       C.handlerFavorites = async function () {
         if (!C.activeProfileId) {
-          alert("Veuillez sélectionner un profil pour voir vos favoris.");
+          Notif.show("Veuillez sélectionner un profil pour voir vos favoris.");
           return;
         }
         let favorites = await DataFavorite.read(C.activeProfileId);
@@ -151,7 +153,7 @@
         detailContainer.style.display = "none";
         let content = document.querySelector("#movie-list");
         if (favorites.length === 0) {
-          content.innerHTML = "<p class='empty-favorites'>Aucun film dans vos favoris.</p>";
+          Notif.show("Vous n'avez pas encore de film en favori.");
         } else {
           content.innerHTML = MovieCategory.format("♥ Mes favoris", favorites);
           MovieCategory.attachWheelListeners();

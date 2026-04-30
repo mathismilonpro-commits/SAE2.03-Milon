@@ -36,12 +36,24 @@
   transform: scale(1.05);
 }
 
-.profile-card__image {
-  max-width: 4rem;
-  height: auto;
-  aspect-ratio: 1;
-  object-fit: cover;
+.profile-card__avatar {
+  width: 4rem;
+  height: 4rem;
   border-radius: 50%;
+}
+
+.profile-card__avatar--img {
+  object-fit: cover;
+}
+
+.profile-card__avatar--letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-gray);
+  color: var(--color-white);
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
 }
 
 .profile-card__name {

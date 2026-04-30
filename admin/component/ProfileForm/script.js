@@ -1,6 +1,9 @@
 let templateFile = await fetch("./component/ProfileForm/template.html");
 let template = await templateFile.text();
 
+let templateOptionFile = await fetch("./component/ProfileForm/template-option.html");
+let templateOption = await templateOptionFile.text();
+
 let ProfileForm = {};
 
 ProfileForm.format = function (handler, handlerSelect, profiles) {
@@ -8,7 +11,12 @@ ProfileForm.format = function (handler, handlerSelect, profiles) {
   let i = 0;
   while (i < profiles.length) {
     let p = profiles[i];
-    options += `<option value="${p.id}" data-name="${p.nom}" data-image="${p.image ?? ""}" data-age="${p.restriction_age}">${p.nom}</option>`;
+    let optionHtml = templateOption;
+    optionHtml = optionHtml.replaceAll("{{id}}", p.id);
+    optionHtml = optionHtml.replaceAll("{{nom}}", p.nom);
+    optionHtml = optionHtml.replaceAll("{{image}}", p.image ?? "");
+    optionHtml = optionHtml.replaceAll("{{restriction_age}}", p.restriction_age);
+    options += optionHtml;
     i++;
   }
 
@@ -24,7 +32,7 @@ ProfileForm.prefill = function (select) {
   let form = select.closest("form");
   let option = select.options[select.selectedIndex];
 
-  form.querySelector("[name='name']").value = option.dataset.name  ?? "";
+  form.querySelector("[name='name']").value = option.dataset.name ?? "";
   form.querySelector("[name='image']").value = option.dataset.image ?? "";
   form.querySelector("[name='restriction_age']").value = option.dataset.age ?? "";
 };

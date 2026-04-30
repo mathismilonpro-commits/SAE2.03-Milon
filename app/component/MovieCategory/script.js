@@ -9,12 +9,11 @@ let MovieCategory = {};
 
 MovieCategory.format = function (categoryName, movies) {
   let categoryHtml = template;
-
   categoryHtml = categoryHtml.replaceAll("{{category}}", categoryName);
   categoryHtml = categoryHtml.replaceAll("{{movies}}", Movie.format(movies));
-
   return categoryHtml;
 };
+
 
 MovieCategory.attachWheelListeners = function () {
   let lists = document.querySelectorAll(".movie-category__list");
