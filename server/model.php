@@ -14,9 +14,9 @@
  * DBPWD : Mot de passe pour se connecter à la base de données.
  */
 define("HOST", "localhost");
-define("DBNAME", "SAE203");
-define("DBLOGIN", "usersae203");
-define("DBPWD", "DtWD!t1oAq?A");
+define("DBNAME", "milon3");
+define("DBLOGIN", "milon3");
+define("DBPWD", "milon3");
 
 
 function getAllMovies(){

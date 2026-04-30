@@ -1,6 +1,6 @@
 
 // URL où se trouve le répertoire "server" sur mmi.unilim.fr
-let HOST_URL = "..";
+let HOST_URL = "https://mmi.unilim.fr/~milon3/SAE2.03-Milon";
 
 let DataProfile = {};
 
@@ -18,7 +18,7 @@ let DataProfile = {};
  * @returns la réponse du serveur.
  */
 DataProfile.read = async function () {
-    let answer = await fetch(HOST_URL + "server/script.php?todo=readprofile");
+    let answer = await fetch(HOST_URL + "/server/script.php?todo=readprofile");
     let data = await answer.json();
     return data;
 }

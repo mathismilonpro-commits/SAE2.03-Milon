@@ -1,21 +1,10 @@
 <?php
-ob_start();
-
-header("Access-Control-Allow-Origin: https://milon-sae203.mmi-limoges.fr");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
 
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 
-set_exception_handler(function($e) {
-    ob_end_clean();
-    header('Content-Type: application/json');
-    http_response_code(500);
-    echo json_encode(['error' => $e->getMessage()]);
-    exit();
-});
+
 
 /** ARCHITECTURE PHP SERVEUR : Rôle du fichier script.php
  * 
