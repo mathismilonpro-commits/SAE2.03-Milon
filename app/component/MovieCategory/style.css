@@ -24,6 +24,14 @@
   display: none;
 }
 
+.movie-category__empty {
+  margin: 0;
+  padding: 1rem 0;
+  color: var(--color-gray-light);
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
 @media (min-width: 640px) {
   .movie-category {
     padding: 0.75rem 0;

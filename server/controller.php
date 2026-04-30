@@ -109,6 +109,22 @@ function readMoviesGroupedByCategoryController(){
     return $movies;
 }
 
+function readStatsController() {
+    $totalProfiles       = getTotalProfiles();
+    $totalMovies         = getTotalMovies();
+    $avgFavorites        = getAvgFavoritesPerProfile();
+    $mostFavoritedMovie  = getMostFavoritedMovie();
+    $mostPopularCategory = getMostPopularCategory();
+
+    return [
+        'total_profiles'        => $totalProfiles        ? $totalProfiles->value        : 0,
+        'total_movies'          => $totalMovies          ? $totalMovies->value          : 0,
+        'avg_favorites'         => $avgFavorites         ? $avgFavorites->value         : 0,
+        'most_favorited_movie'  => $mostFavoritedMovie   ? $mostFavoritedMovie->value   : '—',
+        'most_popular_category' => $mostPopularCategory  ? $mostPopularCategory->value  : '—',
+    ];
+}
+
 function addFavoriteController(){
     if (!isset($_REQUEST['user_id']) || !isset($_REQUEST['movie_id'])) {
         return false;

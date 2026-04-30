@@ -118,52 +118,112 @@ function getMovieDetails($id){
 }
 
 function getMoviesGroupedByCategory($age){
-    // Connexion à la base de données
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
 
-    // On récupère chaque film avec le nom de sa catégorie
-    $sql = "SELECT m.id, m.name, m.image, c.name AS category_name 
+    // Catégorie fictive : films mis en avant
+    $sqlFeatured = "SELECT id, name, image
+                    FROM SAE203_Movie
+                    WHERE mis_en_avant = 1 AND min_age <= :age
+                    ORDER BY name";
+    $stmtF = $cnx->prepare($sqlFeatured);
+    $stmtF->bindParam(':age', $age);
+    $stmtF->execute();
+    $featured = $stmtF->fetchAll(PDO::FETCH_OBJ);
+
+    $grouped = [];
+
+    $grouped["À la une"] = [];
+    $i = 0;
+    while ($i < count($featured)) {
+        $grouped["À la une"][] = [
+            'id'    => $featured[$i]->id,
+            'name'  => $featured[$i]->name,
+            'image' => $featured[$i]->image
+        ];
+        $i++;
+    }
+
+    // Films groupés par catégorie
+    $sql = "SELECT m.id, m.name, m.image, c.name AS category_name
             FROM SAE203_Movie m
             JOIN SAE203_Category c ON m.id_category = c.id
             WHERE m.min_age <= :age
             ORDER BY c.name, m.name";
-    
-    // Préparation puis exécution de la requête SQL
     $stmt = $cnx->prepare($sql);
     $stmt->bindParam(':age', $age);
     $stmt->execute();
-
-    // Résultat sous forme d'objets PHP (un objet par ligne)
     $movies = $stmt->fetchAll(PDO::FETCH_OBJ);
 
-    // Tableau final : ["NomCategorie" => [film1, film2, ...]]
-    $grouped = [];
-
-    // On parcourt tous les films pour les ranger par catégorie
     $i = 0;
     $moviesCount = count($movies);
     while ($i < $moviesCount) {
         $movie = $movies[$i];
-        // Nom de la catégorie du film courant
         $cat = $movie->category_name;
-
-        // Si la catégorie n'existe pas encore, on l'initialise avec un tableau vide
         if (!isset($grouped[$cat])) {
             $grouped[$cat] = [];
         }
-
-        // On ajoute le film dans le tableau de sa catégorie
         $grouped[$cat][] = [
             'id'    => $movie->id,
             'name'  => $movie->name,
             'image' => $movie->image
         ];
-
         $i++;
     }
 
-    // On renvoie la structure regroupée par catégorie
     return $grouped;
+}
+
+function getTotalProfiles() {
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $stmt = $cnx->prepare("SELECT COUNT(*) AS value FROM SAE203_User");
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ);
+}
+
+function getTotalMovies() {
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $stmt = $cnx->prepare("SELECT COUNT(*) AS value FROM SAE203_Movie");
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ);
+}
+
+function getAvgFavoritesPerProfile() {
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $stmt = $cnx->prepare(
+        "SELECT ROUND(COALESCE(AVG(cnt), 0), 1) AS value
+         FROM (SELECT COUNT(*) AS cnt FROM SAE203_Favorite GROUP BY id_user) AS sub"
+    );
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ);
+}
+
+function getMostFavoritedMovie() {
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $stmt = $cnx->prepare(
+        "SELECT m.name AS value, COUNT(*) AS count
+         FROM SAE203_Favorite f
+         JOIN SAE203_Movie m ON f.id_movie = m.id
+         GROUP BY f.id_movie
+         ORDER BY count DESC
+         LIMIT 1"
+    );
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ);
+}
+
+function getMostPopularCategory() {
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $stmt = $cnx->prepare(
+        "SELECT c.name AS value, COUNT(*) AS count
+         FROM SAE203_Favorite f
+         JOIN SAE203_Movie m ON f.id_movie = m.id
+         JOIN SAE203_Category c ON m.id_category = c.id
+         GROUP BY c.id
+         ORDER BY count DESC
+         LIMIT 1"
+    );
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_OBJ);
 }
 
 function addFavorite($user_id, $movie_id) {
