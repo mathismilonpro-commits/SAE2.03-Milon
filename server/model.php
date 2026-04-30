@@ -168,7 +168,7 @@ function getMoviesGroupedByCategory($age){
 
 function addFavorite($user_id, $movie_id) {
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    $sql = "INSERT IGNORE INTO SAE203_Favorite (id_user, id_movie) VALUES (:user_id, :movie_id)";
+    $sql = "INSERT INTO SAE203_Favorite (id_user, id_movie) VALUES (:user_id, :movie_id) ON DUPLICATE KEY UPDATE id_user = id_user";
     $stmt = $cnx->prepare($sql);
     $stmt->bindParam(':user_id', $user_id);
     $stmt->bindParam(':movie_id', $movie_id);

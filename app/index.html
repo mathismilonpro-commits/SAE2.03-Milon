@@ -46,7 +46,10 @@
         C.activeProfileName = name;
         C.activeProfileAge = age;
         let favorites = await DataFavorite.read(id);
-        C.activeFavorites = new Set(favorites.map(f => f.id));
+        C.activeFavorites = new Set();
+        for (let f of favorites) {
+          C.activeFavorites.add(f.id);
+        }
         document.querySelector("#profile-overlay").style.display = "none";
         V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", name, "C.handlerFavorites()");
         await C.handlerMovies();
