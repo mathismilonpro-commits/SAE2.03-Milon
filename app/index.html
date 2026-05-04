@@ -110,6 +110,19 @@
         V.renderMoviesByCategory(movies);
       };
 
+      C.handlerSearch = async function (keyword) {
+        // trim() pour ignorer une saisie composée uniquement d'espaces
+        if (keyword.trim().length === 0) {
+          C.handlerMovies();
+          return;
+        }
+        // trim() pour que "a " (1 lettre + espace) ne passe pas le seuil minimum
+        if (keyword.trim().length < 2) return;
+        // trim() pour ne pas envoyer d'espaces inutiles au serveur
+        let movies = await DataMovie.search(keyword.trim(), C.activeProfileAge);
+        V.renderSearchResults(keyword.trim(), movies);
+      };
+
       C.start = async function () {
         V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", null, "C.handlerFavorites()", "C.handlerStats()");
         let [movies, profiles] = await Promise.all([
@@ -168,6 +181,18 @@
           content.innerHTML = MovieCategory.format("♥ Mes favoris", favorites);
           MovieCategory.attachWheelListeners();
         }
+      };
+
+      V.renderSearchResults = function (keyword, movies) {
+        V.showSection("#movie-list-container");
+        let content = document.querySelector("#movie-list");
+        if (movies.length === 0) {
+          content.innerHTML = "";
+          Notif.show(`Aucun film ne correspond à "${keyword}".`);
+          return;
+        }
+        content.innerHTML = MovieCategory.format(`Résultats pour "${keyword}"`, movies);
+        MovieCategory.attachWheelListeners();
       };
 
       V.renderMoviesByCategory = function (moviesByCategory) {

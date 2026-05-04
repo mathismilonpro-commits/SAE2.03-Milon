@@ -36,4 +36,10 @@ DataMovie.requestMoviesGroupedByCategory = async function(age){
 }
 
 
+DataMovie.search = async function(keyword, age) {
+    let answer = await fetch(HOST_URL + "/server/script.php?todo=searchmovies&keyword=" + encodeURIComponent(keyword) + "&age=" + age);
+    let data = await answer.json();
+    return data;
+}
+
 export {DataMovie};

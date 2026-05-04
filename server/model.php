@@ -173,6 +173,20 @@ function getMoviesGroupedByCategory($age){
     return $grouped;
 }
 
+function searchMovies($keyword, $age) {
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "SELECT m.id, m.name, m.image
+            FROM SAE203_Movie m
+            WHERE m.name LIKE :keyword AND m.min_age <= :age
+            ORDER BY m.name";
+    $stmt = $cnx->prepare($sql);
+    $search = '%' . $keyword . '%';
+    $stmt->bindParam(':keyword', $search);
+    $stmt->bindParam(':age', $age, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
 function getTotalProfiles() {
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
     $stmt = $cnx->prepare("SELECT COUNT(*) AS value FROM SAE203_User");

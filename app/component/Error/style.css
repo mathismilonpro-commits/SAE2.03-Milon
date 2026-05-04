@@ -1,4 +1,4 @@
-.error-popup-container {
+.error-popup__container {
   position: fixed;
   bottom: 1rem;
   left: 1rem;
@@ -63,7 +63,7 @@
 }
 
 @media (min-width: 640px) {
-  .error-popup-container {
+  .error-popup__container {
     left: auto;
     right: 1.5rem;
     bottom: 1.5rem;

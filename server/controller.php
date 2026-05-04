@@ -165,6 +165,15 @@ function removeFavoriteController(){
     }
 }
 
+function searchMoviesController(){
+    if (!isset($_REQUEST['keyword']) || trim($_REQUEST['keyword']) === '') {
+        return false;
+    }
+    $keyword = trim($_REQUEST['keyword']);
+    $age = isset($_REQUEST['age']) ? (int)$_REQUEST['age'] : 0;
+    return searchMovies($keyword, $age);
+}
+
 function updateProfileController(){
     if (!isset($_REQUEST['id']) || !isset($_REQUEST['name']) || !isset($_REQUEST['image']) || !isset($_REQUEST['restriction_age'])) {
         return false; // Indique que des paramètres requis sont manquants

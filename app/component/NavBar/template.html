@@ -5,5 +5,10 @@
     <li class="navbar__item" onclick="{{hFavorites}}">♥ Favoris</li>
     <li class="navbar__item" onclick="{{hStats}}">Stats</li>
   </ul>
-  <span class="navbar__item" onclick="{{hProfile}}">{{profileLabel}}</span>
+  <div class="navbar__search-container">
+    <input class="navbar__search" type="search" placeholder="Rechercher un film…" onkeyup="C.handlerSearch(this.value)">
+  </div>
+  <div class="navbar__actions flex-context gap-m">
+    <span class="navbar__item" onclick="{{hProfile}}">{{profileLabel}}</span>
+  </div>
 </nav>

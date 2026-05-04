@@ -24,7 +24,7 @@
   background-color: var(--color-gray);
 }
 
-.movie-detail > img {
+.movie-detail__image {
   width: 100%;
   max-width: 220px;
   height: auto;
@@ -34,11 +34,11 @@
   margin: 0 auto;
 }
 
-.movie-detail .movie__header {
+.movie-detail__header {
   gap: 0.5rem;
 }
 
-.movie-detail .movie__title {
+.movie-detail__title {
   margin: 0;
   font-size: 1.25rem;
   font-weight: var(--font-weight-bold);
@@ -46,29 +46,29 @@
   line-height: 1.2;
 }
 
-.movie-detail .movie__time {
+.movie-detail__time {
   margin: 0;
 }
 
-.movie-detail .movie__dir,
-.movie-detail .movie__year,
-.movie-detail .movie__length,
-.movie-detail .movie__age,
-.movie-detail .movie__category {
+.movie-detail__dir,
+.movie-detail__year,
+.movie-detail__length,
+.movie-detail__age,
+.movie-detail__category {
   margin: 0;
   font-size: 0.8rem;
   color: var(--color-gray-light);
   line-height: 1.5;
 }
 
-.movie-detail .movie__description {
+.movie-detail__description {
   margin: 0;
   font-size: 0.9rem;
   color: var(--color-fg);
   line-height: 1.6;
 }
 
-.movie-detail .movie__trailer {
+.movie-detail__trailer {
   width: 100%;
   height: 200px;
   border: none;
@@ -128,31 +128,31 @@
     padding: 0.6rem 1.25rem;
   }
 
-  .movie-detail > img {
+  .movie-detail__image {
     max-width: 300px;
   }
 
-  .movie-detail .movie__header {
+  .movie-detail__header {
     gap: 0.75rem;
   }
 
-  .movie-detail .movie__title {
+  .movie-detail__title {
     font-size: 1.5rem;
   }
 
-  .movie-detail .movie__dir,
-  .movie-detail .movie__year,
-  .movie-detail .movie__length,
-  .movie-detail .movie__age,
-  .movie-detail .movie__category {
+  .movie-detail__dir,
+  .movie-detail__year,
+  .movie-detail__length,
+  .movie-detail__age,
+  .movie-detail__category {
     font-size: 0.875rem;
   }
 
-  .movie-detail .movie__description {
+  .movie-detail__description {
     font-size: 1rem;
   }
 
-  .movie-detail .movie__trailer {
+  .movie-detail__trailer {
     height: 350px;
   }
 }
@@ -168,19 +168,19 @@
     padding: 0.75rem 1.5rem;
   }
 
-  .movie-detail > img {
+  .movie-detail__image {
     max-width: 400px;
   }
 
-  .movie-detail .movie__header {
+  .movie-detail__header {
     gap: 1rem;
   }
 
-  .movie-detail .movie__title {
+  .movie-detail__title {
     font-size: 2rem;
   }
 
-  .movie-detail .movie__trailer {
+  .movie-detail__trailer {
     height: 500px;
   }
 }
