@@ -1,14 +1,13 @@
 <div class="form">
-    <h2>Ajouter / Modifier un profil</h2>
-    <form method="POST" class="addProfile__form" onsubmit="event.preventDefault(); {{handler}}()">
-        <select name="id" onchange="{{handlerSelect}}(this)">
+    <h2 class="form__title">Ajouter / Modifier un profil</h2>
+    <form method="POST" class="add-profile__form" onsubmit="event.preventDefault(); {{handler}}()">
+        <select class="form__select" name="id" onchange="{{handlerSelect}}(this)">
             <option value="">— Nouveau profil —</option>
             {{options}}
         </select>
-        <input type="text" name="name" placeholder="Nom du profil" required />
-        <input type="text" name="image" placeholder="Nom de l'image (facultatif)" />
-        <input type="number" name="restriction_age" placeholder="Âge minimum" required />
-
-        <button type="submit">Valider</button>
+        <input class="form__input" type="text" name="name" placeholder="Nom du profil" required />
+        <input class="form__input" type="text" name="image" placeholder="Nom de l'image (facultatif)" />
+        <input class="form__input" type="number" name="restriction_age" placeholder="Âge minimum" required />
+        <button class="form__submit" type="submit">Valider</button>
     </form>
 </div>

@@ -173,18 +173,33 @@ function getMoviesGroupedByCategory($age){
     return $grouped;
 }
 
-function searchMovies($keyword, $age) {
+function searchMovies($keyword, $age = null) {
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
-    $sql = "SELECT m.id, m.name, m.image
+    $sql = "SELECT m.id, m.name, m.image, m.mis_en_avant, c.name AS category
             FROM SAE203_Movie m
-            WHERE m.name LIKE :keyword AND m.min_age <= :age
-            ORDER BY m.name";
+            JOIN SAE203_Category c ON m.id_category = c.id
+            WHERE m.name LIKE :keyword";
+    if ($age !== null) {
+        $sql .= " AND m.min_age <= :age";
+    }
+    $sql .= " ORDER BY m.name";
     $stmt = $cnx->prepare($sql);
     $search = '%' . $keyword . '%';
     $stmt->bindParam(':keyword', $search);
-    $stmt->bindParam(':age', $age, PDO::PARAM_INT);
+    if ($age !== null) {
+        $stmt->bindParam(':age', $age, PDO::PARAM_INT);
+    }
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
+function updateMovieFeatured($id, $status) {
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
+    $sql = "UPDATE SAE203_Movie SET mis_en_avant = :status WHERE id = :id";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    return $stmt->execute();
 }
 
 function getTotalProfiles() {
@@ -204,6 +219,10 @@ function getTotalMovies() {
 function getAvgFavoritesPerProfile() {
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME, DBLOGIN, DBPWD);
     $stmt = $cnx->prepare(
+        // Sous-requête : compte le nombre de favoris par utilisateur (cnt)
+        // AVG(cnt) : moyenne de ces comptes sur tous les utilisateurs
+        // COALESCE(..., 0) : renvoie 0 si la table est vide (AVG retournerait NULL)
+        // ROUND(..., 1) : arrondit à 1 décimale
         "SELECT ROUND(COALESCE(AVG(cnt), 0), 1) AS value
          FROM (SELECT COUNT(*) AS cnt FROM SAE203_Favorite GROUP BY id_user) AS sub"
     );

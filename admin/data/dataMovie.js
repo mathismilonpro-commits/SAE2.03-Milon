@@ -31,4 +31,16 @@ DataMovie.add = async function (fdata) {
 }
 
 
+DataMovie.search = async function(keyword) {
+    let answer = await fetch(HOST_URL + "/server/script.php?todo=searchmovies&keyword=" + encodeURIComponent(keyword));
+    let data = await answer.json();
+    return data;
+}
+
+DataMovie.updateFeatured = async function(id, status) {
+    let answer = await fetch(HOST_URL + "/server/script.php?todo=updatefeatured&id=" + id + "&status=" + status);
+    let data = await answer.json();
+    return data;
+}
+
 export {DataMovie};

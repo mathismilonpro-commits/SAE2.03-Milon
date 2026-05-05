@@ -170,8 +170,24 @@ function searchMoviesController(){
         return false;
     }
     $keyword = trim($_REQUEST['keyword']);
-    $age = isset($_REQUEST['age']) ? (int)$_REQUEST['age'] : 0;
+    // age absent = pas de filtre (contexte admin) ; présent = filtre profil (contexte app)
+    $age = isset($_REQUEST['age']) ? (int)$_REQUEST['age'] : null;
     return searchMovies($keyword, $age);
+}
+
+function updateMovieFeaturedController(){
+    if (!isset($_REQUEST['id']) || !isset($_REQUEST['status'])) {
+        return false;
+    }
+    $id     = (int)$_REQUEST['id'];
+    $status = (int)$_REQUEST['status'];
+    if ($status !== 0 && $status !== 1) {
+        return false;
+    }
+    $ok = updateMovieFeatured($id, $status);
+    if (!$ok) return false;
+    $label = $status === 1 ? 'mis en avant' : 'retiré de la mise en avant';
+    return "Le statut du film a été $label avec succès.";
 }
 
 function updateProfileController(){

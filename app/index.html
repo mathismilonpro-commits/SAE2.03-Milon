@@ -10,15 +10,15 @@
   <body>
     <header id="header"></header>
 
-    <div id="profile-overlay" class="flex-context flex-center"></div>
+    <div id="profile-overlay" class="profile-overlay flex-context flex-center"></div>
     <div id="error"></div>
 
     <section id="content">
-      <div id="movie-list-container" class="movie__container">
-        <div id="movie-list" class="movie__list grid-context gap-m"></div>
+      <div id="movie-list-container">
+        <div id="movie-list" class="movie-list grid-context gap-m"></div>
       </div>
       <div id="movie-detail-container" style="display: none"></div>
-      <div id="stats" class="stats__container"></div>
+      <div id="stats"></div>
     </section>
 
     <script type="module">
@@ -156,11 +156,6 @@
         let overlay = document.querySelector("#profile-overlay");
         overlay.innerHTML = ProfileSelector.format(profiles);
         overlay.style.display = "flex";
-      };
-
-      V.renderMovies = function (movies) {
-        V.showSection("#movie-list-container");
-        document.querySelector("#movie-list").innerHTML = Movie.format(movies);
       };
 
       V.renderMovieDetails = function (movie, isFavorite) {

@@ -5,19 +5,21 @@ body {
   font-family: var(--ff-sans);
   font-size: var(--font-size-base);
   display: grid;
-  grid-template-rows: auto 1fr 1fr;
+  grid-template-rows: auto auto 1fr 1fr;
   grid-template-columns: 1fr;
   grid-template-areas:
     "log"
+    "search"
     "movie"
     "profile";
   gap: var(--space-m);
   padding: var(--space-xs);
 }
 
-#log         { grid-area: log; }
-#movieform   { grid-area: movie; }
-#profileform { grid-area: profile; }
+#log          { grid-area: log; }
+#moviesearch  { grid-area: search; }
+#movieform    { grid-area: movie; }
+#profileform  { grid-area: profile; }
 
 .grid-context { display: grid; }
 .gap-m        { gap: var(--space-m); }
@@ -36,10 +38,11 @@ body {
 
 @media (min-width: 1024px) {
   body {
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto 1fr;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
       "log     log"
+      "search  search"
       "movie   profile";
     padding: var(--space-l);
   }

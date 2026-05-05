@@ -1,17 +1,17 @@
 <div class="form">
-    <h2>Ajouter un film</h2>
-    <form method="POST" class="addFilm__form" onsubmit="event.preventDefault(); {{handler}}()">
-        <input type="text" name="name" placeholder="Titre du film" required />
-        <input type="text" name="director" placeholder="Réalisateur" required />
-        <input type="number" name="year" placeholder="Année de sortie" required />
-        <input type="number" name="length" placeholder="Durée (minutes)" required />
-        <input type="text" name="description" placeholder="Description" required />
-        <select name="categorie" id="categorie" required>
+    <h2 class="form__title">Ajouter un film</h2>
+    <form method="POST" class="add-film__form" onsubmit="event.preventDefault(); {{handler}}()">
+        <input class="form__input" type="text" name="name" placeholder="Titre du film" required />
+        <input class="form__input" type="text" name="director" placeholder="Réalisateur" required />
+        <input class="form__input" type="number" name="year" placeholder="Année de sortie" required />
+        <input class="form__input" type="number" name="length" placeholder="Durée (minutes)" required />
+        <input class="form__input" type="text" name="description" placeholder="Description" required />
+        <select class="form__select" name="categorie" id="categorie" required>
         </select>
-        <input type="text" name="image" placeholder="Affiche" required />
-        <input type="text" name="trailer" placeholder="URL Trailer" required />
-        <select name="min_age" id="min_age" required>
+        <input class="form__input" type="text" name="image" placeholder="Affiche" required />
+        <input class="form__input" type="text" name="trailer" placeholder="URL Trailer" required />
+        <select class="form__select" name="min_age" id="min_age" required>
         </select>
-        <button type="submit">Ajouter</button>
+        <button class="form__submit" type="submit">Ajouter</button>
     </form>
 </div>
