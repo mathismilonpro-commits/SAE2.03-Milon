@@ -222,6 +222,10 @@ ORDER BY name
 
 ### Itération 12 — Statistiques
 
+Point d'entrée serveur : `?todo=readstats` → `readStatsController()` → cinq fonctions modèle agrégées.
+
+> **Correction appliquée** : le `case 'readstats':` était absent du routeur `script.php`, ce qui provoquait une réponse HTTP 400. Il a été ajouté pour brancher correctement la requête vers `readStatsController()`.
+
 Total des profils :
 ```sql
 SELECT COUNT(*) AS value FROM SAE203_User

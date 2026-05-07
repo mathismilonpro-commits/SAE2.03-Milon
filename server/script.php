@@ -111,6 +111,10 @@ if ( isset($_REQUEST['todo']) ){
       $data = removeFavoriteController();
       break;
 
+    case 'readstats':
+      $data = readStatsController();
+      break;
+
     case 'searchmovies':
       $data = searchMoviesController();
       break;
