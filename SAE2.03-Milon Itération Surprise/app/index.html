@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <title>SAE2.03 APP - Films</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="../server/svg/SVT_Play_logotyp.svg" />
+    <link rel="stylesheet" href="./css/base.css" />
+  </head>
+
+  <body>
+    <header id="header"></header>
+
+    <div id="profile-overlay" class="profile-overlay flex-context flex-center"></div>
+    <div id="error"></div>
+    <div id="movie-popup" class="movie-popup"></div>
+
+    <section id="content">
+      <div id="movie-list-container">
+        <div id="movie-list" class="movie-list grid-context gap-m"></div>
+      </div>
+      <div id="movie-detail-container" style="display: none"></div>
+      <div id="stats"></div>
+    </section>
+
+    <script type="module">
+      import { NavBar } from "./component/NavBar/script.js";
+      import { Movie } from "./component/Movie/script.js";
+      import { MovieDetail } from "./component/MovieDetail/script.js";
+      import { DataMovie } from "./data/dataMovie.js";
+      import { MovieCategory } from "./component/MovieCategory/script.js";
+      import { DataProfile } from "./data/dataProfile.js";
+      import { ProfileSelector } from "./component/ProfileSelector/script.js";
+      import { DataFavorite } from "./data/dataFavorite.js";
+      import { Notif } from "./component/Error/script.js";
+      import { DataStats } from "./data/dataStats.js";
+      import { Stats } from "./component/Stats/script.js";
+      import { MoviePopup } from "./component/MoviePopup/script.js";
+
+      window.C = {};
+      C.activeProfileId = null;
+      C.activeProfileName = null;
+      C.activeProfileAge = 0;
+      C.activeFavorites = new Set(); // IDs des films favoris du profil actif
+
+      C.handlerAbout = function () {
+        alert(
+          "SAE 2.03 - Plateforme VOD (Netflix-like)\nAffichage des films disponibles",
+        );
+      };
+
+      C.handlerSelectProfile = async function (id, name, age) {
+        C.activeProfileId = id;
+        C.activeProfileName = name;
+        C.activeProfileAge = age;
+        let favorites = await DataFavorite.read(id);
+        C.activeFavorites = new Set();
+        for (let f of favorites) {
+          C.activeFavorites.add(f.id);
+        }
+        document.querySelector("#profile-overlay").style.display = "none";
+        V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", name, "C.handlerFavorites()", "C.handlerStats()");
+        await C.handlerMovies();
+      };
+
+      C.handlerChangeProfile = async function () {
+        C.activeProfileId = null;
+        C.activeProfileName = null;
+        C.activeProfileAge = 0;
+        C.activeFavorites = new Set();
+        V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", null, "C.handlerFavorites()", "C.handlerStats()");
+        let profiles = await DataProfile.read();
+        V.renderProfiles(profiles);
+      };
+
+      C.handlerSwitchHero = async function (id) {
+        let movie = await DataMovie.requestMovieDetails(id);
+        let heroWrapper = document.querySelector(".movie-category__hero-wrapper");
+        if (heroWrapper) {
+          heroWrapper.innerHTML = Movie.formatHero(movie);
+          applyHeroGradient();
+        }
+      };
+
+      function applyHeroGradient() {
+        let heroImg  = document.querySelector(".movie--hero .movie__image");
+        let heroBody = document.querySelector(".movie__hero-body");
+        if (!heroImg || !heroBody) return;
+
+        let apply = function () {
+          try {
+            let canvas = document.createElement("canvas");
+            let ctx    = canvas.getContext("2d");
+            let w = heroImg.naturalWidth;
+            let h = heroImg.naturalHeight;
+            if (!w || !h) return;
+            canvas.width  = w;
+            canvas.height = h;
+            ctx.drawImage(heroImg, 0, 0, w, h);
+
+            let avg = function (data) {
+              let r = 0, g = 0, b = 0, count = 0, i = 0;
+              while (i < data.length) {
+                if (data[i + 3] > 128) {
+                  r += data[i]; g += data[i + 1]; b += data[i + 2];
+                  count++;
+                }
+                i += 4;
+              }
+              if (count === 0) return null;
+              return { r: Math.round(r / count), g: Math.round(g / count), b: Math.round(b / count) };
+            };
+
+            let sx = Math.floor(w * 0.8);
+            let sw = Math.floor(w * 0.2);
+            let sh = Math.floor(h * 0.25);
+
+            let top = avg(ctx.getImageData(sx, 0,          sw, sh).data);
+            let bot = avg(ctx.getImageData(sx, h - sh, sw, sh).data);
+            if (!top || !bot) return;
+
+            // Dégradé vertical (top → bot) qui commence à 50% du body horizontalement
+            heroBody.style.background = `
+              linear-gradient(to right,
+                transparent 0%,
+                transparent 50%,
+                rgba(${top.r},${top.g},${top.b},0.85) 100%
+              ),
+              linear-gradient(to bottom,
+                rgba(${top.r},${top.g},${top.b},0.25) 0%,
+                rgba(${bot.r},${bot.g},${bot.b},0.25) 100%
+              )`;
+          } catch (e) {
+            console.warn("applyHeroGradient :", e);
+          }
+        };
+
+        if (heroImg.complete && heroImg.naturalWidth > 0) {
+          apply();
+        } else {
+          heroImg.addEventListener("load", apply, { once: true });
+        }
+      }
+
+      C.handlerDetailsFromPopup = function (id) {
+        document.querySelector("#movie-popup").classList.remove("movie-popup--visible");
+        C.handlerDetails(id);
+      };
+
+      C.handlerDetails = async function (id) {
+        let movie = await DataMovie.requestMovieDetails(id);
+        let isFavorite = C.activeFavorites.has(movie.id);
+        V.renderMovieDetails(movie, isFavorite);
+      };
+
+      C.handlerToggleFavorite = async function (movieId, checkbox) {
+        if (!C.activeProfileId) {
+          checkbox.checked = !checkbox.checked;
+          Notif.show("Veuillez sélectionner un profil pour gérer vos favoris.");
+          return;
+        }
+        if (checkbox.checked) {
+          await DataFavorite.add(C.activeProfileId, movieId);
+          C.activeFavorites.add(movieId);
+        } else {
+          await DataFavorite.remove(C.activeProfileId, movieId);
+          C.activeFavorites.delete(movieId);
+        }
+      };
+
+      C.handlerFavorites = async function () {
+        if (!C.activeProfileId) {
+          Notif.show("Veuillez sélectionner un profil pour voir vos favoris.");
+          return;
+        }
+        let favorites = await DataFavorite.read(C.activeProfileId);
+        V.renderFavorites(favorites);
+      };
+
+      C.handlerStats = async function () {
+        let data = await DataStats.read();
+        V.renderStats(data);
+      };
+
+      C.handlerMovies = async function () {
+        let movies = await DataMovie.requestMoviesGroupedByCategory(C.activeProfileAge);
+        V.renderMoviesByCategory(movies);
+      };
+
+      C.handlerSearch = async function (keyword) {
+        // trim() pour ignorer une saisie composée uniquement d'espaces
+        if (keyword.trim().length === 0) {
+          C.handlerMovies();
+          return;
+        }
+        // trim() pour que "a " (1 lettre + espace) ne passe pas le seuil minimum
+        if (keyword.trim().length < 2) return;
+        // trim() pour ne pas envoyer d'espaces inutiles au serveur
+        let movies = await DataMovie.search(keyword.trim(), C.activeProfileAge);
+        V.renderSearchResults(keyword.trim(), movies);
+      };
+
+      C.handlerShowPopup = async function (id, cardEl) {
+        let movie = await DataMovie.requestMovieDetails(id);
+        V.renderMoviePopup(movie, cardEl);
+      };
+
+      C.start = async function () {
+        V.renderNavBar("C.handlerAbout()", "C.handlerMovies()", "C.handlerChangeProfile()", null, "C.handlerFavorites()", "C.handlerStats()");
+        let [movies, profiles] = await Promise.all([
+          DataMovie.requestMoviesGroupedByCategory(0),
+          DataProfile.read()
+        ]);
+        V.renderMoviesByCategory(movies);
+        V.renderProfiles(profiles);
+      };
+
+      window.V = {};
+
+      V.renderMoviePopup = function (movie, cardEl) {
+        let popup = document.querySelector("#movie-popup");
+
+        popup.innerHTML = MoviePopup.format(movie);
+
+        let rect   = cardEl.getBoundingClientRect();
+        let popupW = 272;
+        let left   = rect.right + 8;
+        if (left + popupW > window.innerWidth - 8) left = rect.left - popupW - 8;
+        left = Math.max(8, left);
+
+        let top = rect.top;
+        if (top + 420 > window.innerHeight) top = window.innerHeight - 428;
+        top = Math.max(8, top);
+
+        popup.style.left = left + "px";
+        popup.style.top  = top  + "px";
+        popup.classList.add("movie-popup--visible");
+
+        let hideTimeout;
+
+        // Quitte la carte → délai avant fermeture
+        cardEl.onmouseleave = function () {
+          hideTimeout = setTimeout(function () {
+            popup.classList.remove("movie-popup--visible");
+          }, 80);
+        };
+
+        // Entre dans le popup → annule la fermeture
+        popup.onmouseenter = function () {
+          clearTimeout(hideTimeout);
+        };
+
+        // Quitte le popup → fermeture immédiate
+        popup.onmouseleave = function () {
+          popup.classList.remove("movie-popup--visible");
+        };
+      };
+
+      V.showSection = function (sectionId) {
+        document.querySelector("#movie-list-container").style.display = "none";
+        document.querySelector("#movie-detail-container").style.display = "none";
+        document.querySelector("#stats").style.display = "none";
+        document.querySelector(sectionId).style.display = "block";
+      };
+
+      V.renderNavBar = function (hAbout, hMovies, hProfile, profileLabel, hFavorites, hStats) {
+        let header = document.querySelector("#header");
+        header.innerHTML = NavBar.format(hAbout, hMovies, hProfile, profileLabel, hFavorites, hStats);
+      };
+
+      V.renderStats = function (data) {
+        V.showSection("#stats");
+        document.querySelector("#stats").innerHTML = Stats.format(data);
+      };
+
+      V.renderProfiles = function (profiles) {
+        let overlay = document.querySelector("#profile-overlay");
+        overlay.innerHTML = ProfileSelector.format(profiles);
+        overlay.style.display = "flex";
+      };
+
+      V.renderMovieDetails = function (movie, isFavorite) {
+        V.showSection("#movie-detail-container");
+        document.querySelector("#movie-detail-container").innerHTML = MovieDetail.format(
+          movie,
+          `C.handlerToggleFavorite(${movie.id}, this)`,
+          isFavorite
+        );
+      };
+
+      V.renderFavorites = function (favorites) {
+        V.showSection("#movie-list-container");
+        let content = document.querySelector("#movie-list");
+        content.classList.remove("movie-list--search");
+        if (favorites.length === 0) {
+          Notif.show("Vous n'avez pas encore de film en favori.");
+        } else {
+          content.innerHTML = MovieCategory.format("Mes favoris", favorites);
+          MovieCategory.attachWheelListeners();
+        }
+      };
+
+      V.renderSearchResults = function (keyword, movies) {
+        V.showSection("#movie-list-container");
+        let content = document.querySelector("#movie-list");
+        content.classList.add("movie-list--search");
+        if (movies.length === 0) {
+          content.innerHTML = "";
+          Notif.show(`Aucun film ne correspond à "${keyword}".`);
+          return;
+        }
+        content.innerHTML = MovieCategory.format(`Résultats pour "${keyword}"`, movies);
+        MovieCategory.attachWheelListeners();
+      };
+
+      V.renderMoviesByCategory = function (moviesByCategory) {
+        V.showSection("#movie-list-container");
+        let content = document.querySelector("#movie-list");
+        content.classList.remove("movie-list--search");
+        let categories = Object.keys(moviesByCategory);
+        if (categories.length === 0) {
+          content.innerHTML = "";
+          Notif.show("Aucun film disponible pour ce profil.");
+          return;
+        }
+        let html = "";
+        let i = 0;
+        while (i < categories.length) {
+          let categoryName = categories[i];
+          let movies = moviesByCategory[categoryName];
+          html += MovieCategory.format(categoryName, movies);
+          i++;
+        }
+        content.innerHTML = html;
+        MovieCategory.attachWheelListeners();
+        applyHeroGradient();
+      };
+
+      C.start();
+    </script>
+  </body>
+</html>

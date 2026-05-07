@@ -1,0 +1,9 @@
+<div class="movie flex-context flex-column" onclick="C.handlerSwitchHero({{id}})">
+  <img
+    class="movie__image"
+    src="../server/images/{{image}}"
+    alt="{{name}}"
+    onerror="this.classList.add('movie__image--missing'); this.removeAttribute('src');"
+  />
+  <h3 class="movie__title">{{name}}</h3>
+</div>

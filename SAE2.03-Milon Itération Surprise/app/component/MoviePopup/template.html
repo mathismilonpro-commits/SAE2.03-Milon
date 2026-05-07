@@ -1,0 +1,9 @@
+<img class="movie-popup__image" src="../server/images/{{image}}" alt="{{name}}" onerror="this.style.display='none'">
+<div class="movie-popup__body">
+  <h3 class="movie-popup__title">{{name}}</h3>
+  <p class="movie-popup__meta">{{year}} · {{length}} min · {{category}}</p>
+  <p class="movie-popup__description">{{description}}</p>
+  <button class="movie-popup__btn" onclick="C.handlerDetailsFromPopup({{id}})">
+    Voir les détails
+  </button>
+</div>

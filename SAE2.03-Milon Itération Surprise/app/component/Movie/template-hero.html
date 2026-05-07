@@ -1,0 +1,28 @@
+<div class="movie movie--hero">
+  <img
+    class="movie__image"
+    src="../server/images/{{image}}"
+    alt="{{name}}"
+    onerror="this.classList.add('movie__image--missing'); this.removeAttribute('src');"
+  />
+  <div class="movie__hero-body flex-center-row">
+    <div class="movie__hero-row">
+      <div class="movie__hero-content">
+        <h2 class="movie__hero-title">{{name}}</h2>
+        <p class="movie__hero-meta">{{year}} · {{length}} min · {{category}} · {{min_age}}+</p>
+        <p class="movie__hero-director">{{director}}</p>
+        <p class="movie__hero-description">{{description}}</p>
+        <div class="movie__hero-actions">
+          <label class="movie__hero-favorite">
+            <input type="checkbox" onchange="C.handlerToggleFavorite({{id}}, this)" {{favoriteChecked}}>
+             Favoris
+          </label>
+          <button class="movie__hero-trailer-btn" onclick="this.closest('.movie__hero-row').querySelector('.movie__hero-trailer-wrapper').classList.toggle('movie__hero-trailer-wrapper--visible')">▶ Trailer</button>
+        </div>
+      </div>
+      <div class="movie__hero-trailer-wrapper">
+        <iframe class="movie__hero-trailer" src="{{trailer}}" title="Bande-annonce" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</div>

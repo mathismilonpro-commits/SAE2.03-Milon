@@ -1,0 +1,40 @@
+.grid-context {
+  display: grid;
+}
+
+.gap-m {
+  gap: var(--space-m);
+}
+
+.flex-context {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.gap-xs {
+  gap: var(--space-xs);
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-center {
+
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-center-row {
+  justify-content: center;
+}
+.flex-center-column {
+  align-items: center;
+}

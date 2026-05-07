@@ -1,0 +1,12 @@
+.font-sans {
+  font-family: var(--ff-sans);
+}
+
+.fs-size-base {
+  font-size: var(--font-size-base);
+}
+
+.font-weight-bold {
+  font-weight: var(--font-weight-bold);
+}
+
