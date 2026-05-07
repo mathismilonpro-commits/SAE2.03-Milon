@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <title>SAE2.03 ADMIN</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/base.css" />
+  </head>
+  <body>
+    <section id="log"></section>
+    <section id="moviesearch"></section>
+    <section id="movieform"></section>
+    <section id="profileform"></section>
+
+    <script type="module">
+      import { Log } from "./component/Log/script.js";
+      import { DataProfile } from "./data/dataProfile.js";
+      import { DataMovie } from "./data/dataMovie.js";
+      import { MovieForm } from "./component/MovieForm/script.js";
+      import { ProfileForm } from "./component/ProfileForm/script.js";
+      import { MovieSearch } from "./component/MovieSearch/script.js";
+
+      window.C = {};
+      C.lastSearchKeyword = '';
+
+      C.handlerSubmitProfile = async function () {
+        let form = document.querySelector(".add-profile__form");
+        let fd = new FormData(form);
+        let id = fd.get("id");
+
+        let res;
+        if (id) {
+          res = await DataProfile.updateProfile(fd);
+        } else {
+          res = await DataProfile.addProfile(fd);
+        }
+        V.renderLog(res);
+        let profiles = await DataProfile.read();
+        V.renderProfileForm(profiles);
+      };
+
+      C.handlerSelectProfile = function (select) {
+        ProfileForm.prefill(select);
+      };
+
+      C.handlerSearchMovies = async function () {
+        let keyword = document.querySelector("#movie-search-input").value.trim();
+        if (keyword.length === 0) return;
+        C.lastSearchKeyword = keyword;
+        let movies = await DataMovie.search(keyword);
+        V.renderMovieSearchResults(movies);
+      };
+
+      C.handlerToggleFeatured = async function (id, newStatus) {
+        let res = await DataMovie.updateFeatured(id, newStatus);
+        V.renderLog(res);
+        let movies = await DataMovie.search(C.lastSearchKeyword);
+        V.renderMovieSearchResults(movies);
+      };
+
+      C.handlerAddMovie = async function () {
+        let form = document.querySelector(".add-film__form");
+        let fd = new FormData(form);
+        let res = await DataMovie.add(fd);
+        V.renderLog(res);
+      };
+
+      C.start = async function () {
+        V.renderLog("Démarrage de l'application");
+        V.renderMovieSearch();
+        V.renderMovieForm("C.handlerAddMovie");
+        let profiles = await DataProfile.read();
+        V.renderProfileForm(profiles);
+      };
+
+      window.V = {};
+
+      V.renderMovieSearch = function () {
+        let content = document.querySelector("#moviesearch");
+        content.innerHTML = MovieSearch.format("C.handlerSearchMovies()");
+      };
+
+      V.renderMovieSearchResults = function (movies) {
+        document.querySelector("#movie-search-results").innerHTML = MovieSearch.formatResults(movies);
+      };
+
+      V.renderLog = function (txt) {
+        let content = document.querySelector("#log");
+        content.innerHTML = Log.format(txt);
+      };
+
+      V.renderMovieForm = function (handler) {
+        let content = document.querySelector("#movieform");
+        content.innerHTML = MovieForm.format(handler);
+        // Charge les catégories et les restrictions d'âge après le rendu du formulaire
+        MovieForm.loadCategories();
+        MovieForm.loadMinAges();
+      };
+
+      V.renderProfileForm = function (profiles) {
+        let content = document.querySelector("#profileform");
+        content.innerHTML = ProfileForm.format("C.handlerSubmitProfile", "C.handlerSelectProfile", profiles);
+      };
+
+      C.start();
+    </script>
+  </body>
+</html>

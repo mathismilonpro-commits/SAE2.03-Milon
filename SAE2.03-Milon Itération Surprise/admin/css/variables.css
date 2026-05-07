@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700&display=swap");
+
+:root {
+  /* Primitive Tokens — SVT Play exact palette */
+  --color-bg-page:       #1b1614;
+  --color-surface-1:     #211d1b;
+  --color-surface-2:     #2b2523;
+  --color-surface-3:     #362e2b;
+  --color-emphasis:      #00c800;
+
+  --color-white:         #ffffff;
+  --color-gray-light:    #adadad;
+  --color-gray:          #736a67;
+
+  /* Boutons SVT Play */
+  --btn-primary-color:   #000000;
+  --btn-primary-bg:      #ffffff;
+  --btn-primary-hover:   #ebebe6;
+  --btn-secondary-color: #ffffff;
+  --btn-secondary-bg:    rgba(255, 255, 255, 0.10);
+  --btn-secondary-hover: rgba(255, 255, 255, 0.15);
+  --btn-dark-color:      #ffffff;
+  --btn-dark-bg:         #2b2523;
+  --btn-dark-hover:      #362e2b;
+
+  --ff-sans: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --font-size-1: 1rem;
+  --font-weight-700: 700;
+  --space-15: 1.5rem;
+  --space-075: 0.75rem;
+
+  /* Semantic aliases */
+  --color-black:      var(--color-bg-page);
+  --color-gray-dark:  var(--color-surface-1);
+  --color-fg:         var(--color-white);
+  --color-bg:         var(--color-bg-page);
+  --color-surface:    var(--color-surface-1);
+  --color-border:     var(--color-surface-3);
+  --color-accent:     var(--color-emphasis);
+  --color-accent-hover: hsl(120, 100%, 25%);
+  --color-input-bg:   var(--color-surface-2);
+
+  --font-size-base: var(--font-size-1);
+  --font-size-sm:   0.875rem;
+  --font-size-lg:   1.25rem;
+  --font-size-xl:   1.75rem;
+  --font-weight-bold: var(--font-weight-700);
+  --space-m:  var(--space-15);
+  --space-xs: var(--space-075);
+  --space-s:  1rem;
+  --space-l:  2rem;
+  --space-xl: 3rem;
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --transition: 150ms ease;
+}

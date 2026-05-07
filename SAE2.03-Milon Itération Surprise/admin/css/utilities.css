@@ -1,0 +1,71 @@
+.font-sans {
+  font-family: var(--ff-sans);
+}
+
+.font-mono {
+  font-family: Courier, monospace;
+}
+
+/* Form card */
+.form {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-m);
+  padding: var(--space-l);
+}
+
+.form__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-m);
+  color: var(--color-fg);
+  border-bottom: 2px solid var(--color-accent);
+  padding-bottom: var(--space-xs);
+}
+
+.form__input,
+.form__select,
+.form__submit {
+  width: 100%;
+  padding: 0.6rem var(--space-xs);
+  font-family: var(--ff-sans);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-s);
+  border: 1px solid var(--color-border);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form__input,
+.form__select {
+  background-color: var(--color-input-bg);
+  color: var(--color-fg);
+}
+
+.form__input::placeholder {
+  color: var(--color-gray);
+}
+
+.form__input:focus,
+.form__select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px rgba(0, 200, 0, 0.2);
+}
+
+.form__select option {
+  background-color: var(--color-surface);
+}
+
+.form__submit {
+  margin-top: var(--space-xs);
+  background-color: var(--color-accent);
+  color: var(--color-black);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  border: none;
+  letter-spacing: 0.02em;
+}
+
+.form__submit:hover {
+  background-color: var(--color-accent-hover);
+}

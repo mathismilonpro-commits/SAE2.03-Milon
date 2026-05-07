@@ -1,0 +1,101 @@
+.movie-search {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  padding: var(--space-s);
+}
+
+.movie-search__title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-fg);
+}
+
+.movie-search__form {
+  align-items: center;
+}
+
+.movie-search__input {
+  padding: 0.5rem 0.75rem;
+  background-color: var(--color-input-bg);
+  color: var(--color-fg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-s);
+  font-size: var(--font-size-sm);
+  font-family: var(--ff-sans);
+  width: 16rem;
+  outline: none;
+  transition: border-color var(--transition);
+  &::placeholder { color: var(--color-gray); }
+  &:focus { border-color: var(--color-fg); }
+}
+
+.movie-search__btn {
+  padding: 0.5rem 1rem;
+  background-color: var(--color-surface);
+  color: var(--color-fg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-s);
+  font-size: var(--font-size-sm);
+  font-family: var(--ff-sans);
+  cursor: pointer;
+  transition: background-color var(--transition);
+  &:hover { background-color: var(--color-gray); }
+}
+
+.movie-search__results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.movie-search__row {
+  align-items: center;
+  gap: var(--space-s);
+  padding: 0.6rem var(--space-s);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-s);
+}
+
+.movie-search__name {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-fg);
+}
+
+.movie-search__category {
+  font-size: 0.8rem;
+  color: var(--color-gray-light);
+  min-width: 8rem;
+}
+
+.movie-search__toggle {
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-s);
+  font-size: 0.8rem;
+  font-family: var(--ff-sans);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.movie-search__toggle--on {
+  background-color: var(--color-accent);
+  color: var(--color-black);
+  &:hover { background-color: var(--color-accent-hover); color: var(--color-white); }
+}
+
+.movie-search__toggle--off {
+  background-color: transparent;
+  color: var(--color-gray-light);
+  border-color: var(--color-border);
+  &:hover { background-color: var(--color-surface); color: var(--color-fg); }
+}
+
+.movie-search__empty {
+  color: var(--color-gray-light);
+  font-size: var(--font-size-sm);
+  padding: 0.75rem;
+}
